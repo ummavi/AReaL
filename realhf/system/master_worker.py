@@ -11,6 +11,7 @@ import getpass
 import itertools
 import os
 import pprint
+import random
 import re
 import time
 import uuid
@@ -40,6 +41,7 @@ from realhf.base import (
     logging,
     name_resolve,
     names,
+    seeding,
     timeutil,
     topology,
 )
@@ -48,12 +50,8 @@ from realhf.base.asyncio_utils import (
     setup_run_until_complete,
     teardown_run_util_complete,
 )
-from realhf.base.monitor import (
-    caculuate_llama_forward_flops,
-    calculate_llama_gen_flops,
-    calculate_llama_train_flops,
-)
 from realhf.system.buffer import AsyncIOSequenceBuffer
+from realhf.system.flops_counter import FlopsCounter
 
 logger = logging.getLogger("master worker", "system")
 blogger = logging.getLogger("benchmark")
@@ -108,37 +106,6 @@ def _attach_param_realloc_hooks(
 
 
 @dataclasses.dataclass
-class InterfaceDataAmount:
-    train_configs: List[ReaLModelConfig] = dataclasses.field(default_factory=list)
-    train_bs: List[int] = dataclasses.field(default_factory=list)
-    train_seqlens: List[List[int]] = dataclasses.field(default_factory=list)
-
-    inf_configs: List[ReaLModelConfig] = dataclasses.field(default_factory=list)
-    inf_bs: List[int] = dataclasses.field(default_factory=list)
-    inf_seqlens: List[List[int]] = dataclasses.field(default_factory=list)
-
-    gen_configs: List[ReaLModelConfig] = dataclasses.field(default_factory=list)
-    gen_bs: List[int] = dataclasses.field(default_factory=list)
-    prompt_lens: List[List[int]] = dataclasses.field(default_factory=list)
-    gen_len: List[int] = dataclasses.field(default_factory=list)
-
-    def clear(self):
-        self.train_bs.clear()
-        self.train_seqlens.clear()
-
-        self.inf_bs.clear()
-        self.inf_seqlens.clear()
-
-        self.gen_bs.clear()
-        self.prompt_lens.clear()
-        self.gen_len.clear()
-
-        self.train_configs.clear()
-        self.inf_configs.clear()
-        self.gen_configs.clear()
-
-
-@dataclasses.dataclass
 class RPCCorountineControl:
     ## Shared resources ##
     stop: asyncio.Event
@@ -157,9 +124,7 @@ class RPCCorountineControl:
 
     # for training data management and data cleaning after each step
     ids_to_clear: Set[int] = dataclasses.field(default_factory=set)
-    data_amount: InterfaceDataAmount = dataclasses.field(
-        default_factory=InterfaceDataAmount
-    )
+    flops_counter: FlopsCounter = dataclasses.field(default_factory=FlopsCounter)
 
     should_save: bool = False
     should_eval: bool = False
@@ -408,31 +373,7 @@ async def model_rpc_request_func(
 
         buf_indices, sample = await buffer.get_batch_for_rpc(rpc)
 
-        # Record the data amount for each interface to compute FLOPs.
-        # Since the user may arbitrarily specify input/output keys,
-        # we can only try to find the most probable key name for computing FLOPs.
-        # If such keys do not exist, we will use the key with the longest
-        # sequence length in this model function call.
-        acc_seqlens = {
-            k: sum(sum(x) for x in slens) for k, slens in sample.seqlens.items()
-        }
-        seqlen_key = max(sample.seqlens, key=acc_seqlens.get)
-        flops_seqlens = [sum(x) for x in sample.seqlens[seqlen_key]]
-        if rpc.interface_type == dfg.ModelInterfaceType.GENERATE:
-            ctrl.data_amount.gen_configs.append(model_configs[rpc.model_name])
-            ctrl.data_amount.gen_bs.append(sample.bs)
-            ctrl.data_amount.gen_len.append(
-                rpc.interface_impl.args["generation_config"]["min_new_tokens"]
-            )
-            ctrl.data_amount.prompt_lens.append(flops_seqlens)
-        elif rpc.interface_type == dfg.ModelInterfaceType.TRAIN_STEP:
-            ctrl.data_amount.train_configs.append(model_configs[rpc.model_name])
-            ctrl.data_amount.train_bs.append(sample.bs)
-            ctrl.data_amount.train_seqlens.append(flops_seqlens)
-        elif rpc.interface_type == dfg.ModelInterfaceType.INFERENCE:
-            ctrl.data_amount.inf_configs.append(model_configs[rpc.model_name])
-            ctrl.data_amount.inf_bs.append(sample.bs)
-            ctrl.data_amount.inf_seqlens.append(flops_seqlens)
+        ctrl.flops_counter.add_rpc(rpc, sample, model_configs[rpc.model_name])
 
         this_rpc_consumed_seqs += sample.bs
 
@@ -440,21 +381,27 @@ async def model_rpc_request_func(
 
         # Dispatch data to different data parallel ranks.
         dp_size = topo.get_dim("data")
-        pp_size = topo.get_dim("pipe")
-        if rpc.mb_spec.balanced_seqs or (
-            rpc.mb_spec.max_tokens_per_mb is not None
-            and rpc.interface_type == dfg.ModelInterfaceType.TRAIN_STEP
-        ):
-            # For a train RPC, we must assure that all DP ranks have the same number
-            # of micro-batches, so we must evenly distribute the sequences.
-            assert sample.bs % dp_size == 0
-            min_n_seqs_per_dp = sample.bs // dp_size
+        if rpc.is_generate():
+            # The workload of generation is decided by batch size, instead of the generated length.
+            samples, forward_indices, _ = sample.split_with_lengths(
+                mb_spec=data_api.MicroBatchSpec(n_mbs=dp_size),
+                lens=[1 for _ in range(sample.bs)],
+            )
         else:
-            min_n_seqs_per_dp = pp_size * rpc.min_n_seqs_per_pass * rpc.mb_spec.n_mbs
-            if rpc.interface_type == dfg.ModelInterfaceType.TRAIN_STEP and pp_size > 1:
-                min_n_seqs_per_dp *= 2
-        split_spec = sample.get_split_spec(dp_size, min_size=int(min_n_seqs_per_dp))
-        partitions = split_spec.partitions
+            samples, forward_indices, _ = sample.split(
+                data_api.MicroBatchSpec(n_mbs=dp_size)
+            )
+        blogger.info(
+            f"DP split (DP size {dp_size}) for RPC {rpc.name}: "
+            f"#seqs: {[s.bs for s in samples]}, "
+            f"#tokens: {[sum([sum(lens) for lens in s.seqlens[s._get_split_key()]]) for s in samples]}"
+        )
+        sample = data_api.SequenceSample.gather(samples)
+        buf_indices = [buf_indices[i] for i in forward_indices]
+
+        partitions = data_api.SequenceSplitSpec(
+            sizes=[s.bs for s in samples]
+        ).partitions
         target_mapping = {i: list(range(v[0], v[1])) for i, v in enumerate(partitions)}
 
         # Set data owner of produced data by this RPC, such that downstream RPCs can know
@@ -598,6 +545,8 @@ class MasterWorker(worker_base.Worker):
 
     def _configure(self, config: config_pkg.MasterWorker):
         self.config = config
+
+        seeding.set_random_seed(self.config.base_seed + self.config.n_model_workers)
 
         self.__model_topos: Dict[ModelName, topology.PipeModelDataParallelTopology] = (
             config.model_topos
@@ -1248,12 +1197,9 @@ class MasterWorker(worker_base.Worker):
                 filtered_data.append(x)
         all_data = filtered_data
 
-        # Reorder loaded (meta-)data and store them into the buffer.
-        # NOTE: The reordered indices prioritize longer sequences for detecting OOM errors early.
-        # reorder_indices, _ = datapack.reorder_to_balanced_batches(
-        #     np.array(seqlens), src_rpc.n_seqs
-        # )
-        # all_data: List[data_api.SequenceSample] = [all_data[i] for i in reorder_indices]
+        # We load data in a round-robin manner across different DP ranks,
+        # so we also need to shuffle the data to fuse different dataset splits.
+        random.shuffle(all_data)
 
         blogger.info(
             f"Master worker loaded {len(all_data)} pieces of data. "
@@ -1287,52 +1233,10 @@ class MasterWorker(worker_base.Worker):
             flops = None
             tflops_per_gpu = float("inf")
         else:
-            flops = 0
-            for train_bs, train_seqlens, real_config in zip(
-                self.__rpc_ctrl.data_amount.train_bs,
-                self.__rpc_ctrl.data_amount.train_seqlens,
-                self.__rpc_ctrl.data_amount.train_configs,
-            ):
-                flops += calculate_llama_train_flops(
-                    checkpoint_activations_factor=4,
-                    batch_size=train_bs,
-                    seqlens=train_seqlens,
-                    num_layers=real_config.n_layers,
-                    hidden_size=real_config.hidden_dim,
-                    intermediate_size=real_config.intermediate_dim,
-                    vocab_size=real_config.vocab_size,
-                )
-            for inf_bs, inf_seqlens, real_config in zip(
-                self.__rpc_ctrl.data_amount.inf_bs,
-                self.__rpc_ctrl.data_amount.inf_seqlens,
-                self.__rpc_ctrl.data_amount.inf_configs,
-            ):
-                flops += caculuate_llama_forward_flops(
-                    batch_size=inf_bs,
-                    seqlens=inf_seqlens,
-                    num_layers=real_config.n_layers,
-                    hidden_size=real_config.hidden_dim,
-                    intermediate_size=real_config.intermediate_dim,
-                    vocab_size=real_config.vocab_size,
-                )
-            for gen_bs, prompt_lens, gen_len, real_config in zip(
-                self.__rpc_ctrl.data_amount.gen_bs,
-                self.__rpc_ctrl.data_amount.prompt_lens,
-                self.__rpc_ctrl.data_amount.gen_len,
-                self.__rpc_ctrl.data_amount.gen_configs,
-            ):
-                flops += calculate_llama_gen_flops(
-                    batch_size=gen_bs,
-                    prompt_lens=prompt_lens,
-                    gen_len=gen_len,
-                    num_layers=real_config.n_layers,
-                    hidden_size=real_config.hidden_dim,
-                    intermediate_size=real_config.intermediate_dim,
-                    vocab_size=real_config.vocab_size,
-                )
+            flops = self.__rpc_ctrl.flops_counter.get_flops()
             tflops = flops / (e2e_time * (10**12))
             tflops_per_gpu = flops / (e2e_time * self.config.n_model_workers * (10**12))
-        self.__rpc_ctrl.data_amount.clear()
+        self.__rpc_ctrl.flops_counter.clear()
         #########################################
 
         epoch = self.__rpc_ctrl.step_info.epoch + 1

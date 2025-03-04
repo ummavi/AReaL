@@ -17,7 +17,10 @@ import realhf.impl.model.parallelism.pipeline_parallel.p2p as p2p
 import realhf.impl.model.parallelism.pipeline_parallel.static_schedule as schedule
 import realhf.impl.model.utils.cuda_graph as cuda_graph
 from realhf.api.core.data_api import MicroBatchSpec, SequenceSample
-from realhf.api.core.model_api import GenerationHyperparameters
+from realhf.api.core.model_api import (
+    GenerationHyperparameters,
+    ZeroTotalLossWeightException,
+)
 from realhf.base.datapack import flat2d
 from realhf.impl.model.nn.real_llm_api import ReaLModel
 from realhf.impl.model.nn.real_llm_base import PipeCacheData, PipeTransferData
@@ -668,7 +671,7 @@ class PipeTrainForwardCommInstrSet:
                 "input_cache", micro_batch_id, remove=True
             )
             loss, stats = loss_fn(model_output, input_cache)
-            loss = loss / tensor_buffer.get("n_pp_mbs", micro_batch_id)
+            loss = loss * tensor_buffer.get("loss_scale", micro_batch_id)
             tensor_buffer.put("losses", micro_batch_id, loss)
             tensor_buffer.put("stats", micro_batch_id, stats)
 
@@ -751,6 +754,7 @@ class PipeTrainForwardCommInstrSet:
 
 @dataclasses.dataclass
 class PipeTrainInstrSet:
+    engine: Any
 
     def _exec_optimizer_step(self, *args, **kwargs):
         raise NotImplementedError()
@@ -804,7 +808,7 @@ class PipelineRunner:
         mb_spec = MicroBatchSpec.new(
             mb_spec, n_mbs=self.default_inf_mbs * mb_spec.n_mbs
         )
-        mb_inputs, fwd_indices, bwd_indices = input_.divide_into_mbs(mb_spec)
+        mb_inputs, fwd_indices, bwd_indices = input_.split(mb_spec)
         if constants.parallelism_rank() == 0:
             logger.info(
                 f"MB spec: {mb_spec}, #mbs={len(mb_inputs)}, "
@@ -880,11 +884,8 @@ class PipelineRunner:
         # When the global batch is fixed, not matter how many micro-batches we
         # split, the all-together KV-cache memory usage will not be changed,
         # so it's useless to split micro-batches here.
-        mb_spec = MicroBatchSpec(
-            n_mbs=self.default_inf_mbs,
-            balanced_seqs=True,
-        )
-        mb_inputs, *_ = input_.divide_into_mbs(mb_spec)
+        mb_spec = MicroBatchSpec(n_mbs=self.default_inf_mbs)
+        mb_inputs, *_ = input_.split(mb_spec)
         if constants.parallelism_rank() == 0:
             logger.info(
                 f"MB spec: {mb_spec}, #mbs={len(mb_inputs)}, "
@@ -992,6 +993,8 @@ class PipelineRunner:
         input_: SequenceSample,
         mb_spec: MicroBatchSpec,
         loss_fn: Callable,
+        loss_weight_fn: Callable,
+        token_normalize_scope: str,
         version_steps: int,
     ):
         # TODO: return whether update success
@@ -1003,7 +1006,13 @@ class PipelineRunner:
         mb_spec = MicroBatchSpec.new(
             mb_spec, n_mbs=mb_spec.n_mbs * self.default_train_mbs
         )
-        mb_inputs = input_.divide_into_mbs_balanced(mb_spec)
+        mb_inputs = input_.synced_data_parallel_split(mb_spec)
+        total_loss_weight = torch.tensor(
+            sum([loss_weight_fn(mb) for mb in mb_inputs]), dtype=torch.float32
+        )
+        if token_normalize_scope == "global":
+            dist.all_reduce(total_loss_weight, group=constants.data_parallel_group())
+
         if constants.parallelism_rank() == 0:
             logger.info(
                 f"MB spec: {mb_spec}, #mbs={len(mb_inputs)}, "
@@ -1016,6 +1025,15 @@ class PipelineRunner:
         tensor_buffer = TensorBuffer()
         for i in range(n_pp_mbs):
             tensor_buffer.put("n_pp_mbs", i, n_pp_mbs)
+            loss_scale = loss_weight_fn(mb_inputs[i]) / total_loss_weight
+            if token_normalize_scope == "global":
+                # Megatron will average gradients across DP ranks.
+                # If we normalize loss across micro batches of all DP ranks,
+                # we should revert the effect of gradient averaging in megatron
+                # to make sure loss from each token is scaled properly.
+                loss_scale *= constants.data_parallel_world_size()
+            loss_scale *= instr_set.engine.optim.get_loss_scale().item()
+            tensor_buffer.put("loss_scale", i, loss_scale)
             tensor_buffer.put("version_steps", i, version_steps)
             tensor_buffer.put("loss_fn", i, loss_fn)
 

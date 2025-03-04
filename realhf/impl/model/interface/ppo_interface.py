@@ -7,7 +7,7 @@ import dataclasses
 import functools
 import itertools
 import time
-from typing import Dict, Optional, Tuple
+from typing import Dict, Literal, Optional, Tuple
 
 import torch
 import torch.distributed as dist
@@ -186,6 +186,7 @@ class PPOActorInterface(model_api.ModelInterface):
     mask_too_long: bool = False
     use_dense_reward: bool = False
     reward_delta: bool = True
+    token_normalize_scope: Literal["global", "dp"] = "global"
 
     def __post_init__(self):
         if self.adaptive_kl_ctl:
@@ -614,9 +615,11 @@ class PPOActorInterface(model_api.ModelInterface):
         )
         # NOTE: We cannot randomly shuffle data here because
         # data must have the same shape across different pipeline stages.
-        datas = input_.split(
-            self.n_minibatches,
-            min_size=input_.bs // self.n_minibatches,
+        datas, *_ = input_.split(MicroBatchSpec(n_mbs=self.n_minibatches))
+        logger.info(
+            f"PPO minibatch split (size {self.n_minibatches}): "
+            f"#seqs: {[s.bs for s in datas]}, "
+            f"#tokens: {[sum([sum(lens) for lens in s.seqlens[s._get_split_key()]]) for s in datas]}"
         )
 
         if self.use_dense_reward:
@@ -672,6 +675,7 @@ class PPOActorInterface(model_api.ModelInterface):
 
         # Run mini-batched PPO training!
         train_stats = collections.defaultdict(lambda: 0)
+
         for data in datas:
             stats = module.train_batch(
                 input_=data,
@@ -685,6 +689,8 @@ class PPOActorInterface(model_api.ModelInterface):
                     early_stop_kl=self.early_stop_kl,
                     temperature=self.gconfig.temperature,
                 ),
+                loss_weight_fn=lambda x: x.data["ppo_loss_mask"].count_nonzero(),
+                token_normalize_scope=self.token_normalize_scope,
             )
 
             if stats:
@@ -888,6 +894,7 @@ class PPOCriticInterface(model_api.ModelInterface):
     mask_too_long: bool = False
     use_dense_reward: bool = False
     reward_delta: bool = True
+    token_normalize_scope: Literal["global", "dp"] = "global"
 
     def __post_init__(self):
         if self.adaptive_kl_ctl:
@@ -1086,9 +1093,11 @@ class PPOCriticInterface(model_api.ModelInterface):
         )
         # NOTE: We cannot randomly shuffle data here because
         # data must have the same shape across different pipeline stages.
-        datas = input_.split(
-            self.n_minibatches,
-            min_size=input_.bs // self.n_minibatches,
+        datas, *_ = input_.split(MicroBatchSpec(n_mbs=self.n_minibatches))
+        logger.info(
+            f"PPO minibatch split (size {self.n_minibatches}): "
+            f"#seqs: {[s.bs for s in datas]}, "
+            f"#tokens: {[sum([sum(lens) for lens in s.seqlens[s._get_split_key()]]) for s in datas]}"
         )
 
         # Logging.
@@ -1111,6 +1120,8 @@ class PPOCriticInterface(model_api.ModelInterface):
                     kl_adapter=self.kl_adapter,
                     rms=None if not self.value_norm else self.rms,
                 ),
+                loss_weight_fn=lambda x: x.data["ppo_loss_mask"].count_nonzero(),
+                token_normalize_scope=self.token_normalize_scope,
             )
 
             if stats:
