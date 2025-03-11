@@ -2,16 +2,9 @@
 # Copyright 2024 Wei Fu & Zhiyu Mei
 # Licensed under the Apache License, Version 2.0 (the "License").
 
-import collections
-import copy
 import dataclasses
-import enum
-import getpass
-import itertools
-import math
 import os
-import sys
-from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import realhf.api.core.dfg as dfg
 from realhf.api.core.config import (
@@ -235,6 +228,36 @@ class ExperimentScheduling:
 
 
 @dataclasses.dataclass
+class AutomaticEvaluator:
+    """Configuration for automatic evaluation.
+    :param data_names: Dataset for evaluation seperated by comma. Currently support datasets stored under ./evaluation/data,
+        including "aime24", "amc23" and "math_500". For example, if "aime24" and "amc23" are required for evaluation,
+        this field should be set to "aime24,amc23".
+    :type data_names: str
+    :param max_gen_tokens: Maximum number of tokens to be generated in evaluation.
+    :type max_gen_tokens: int
+    :param max_concurrent_jobs: Maximum number of concurrent evaluation jobs to submit. If number of existing jobs is equal to
+        `max_concurrent_jobs` and a new checkpoint is saved, the evaluation job will wait until former jobs complete.
+    :type max_concurrent_jobs: int
+    :param eval_job_image: Container image used to launch evaluation job. If set to None, evaluation jobs will use
+        GPU image for training.
+    :type eval_job_image: Optional[str]
+    :param initial_checkpoint_path: Initial checkpoint path to evaluate. If specified, this initial checkpoint will be evaluated,
+        results will be stored as global_step = 0.
+    :type initial_checkpoint_path: Optional[str]
+    :param prompt_type: Prompt format used in evaluation.
+    :type prompt_type: str
+    """
+
+    data_names: str = "aime24"
+    max_gen_tokens: int = 32768
+    max_concurrent_jobs: int = 3
+    eval_job_image: Optional[str] = None
+    initial_checkpoint_path: Optional[str] = None
+    prompt_type: str = "deepscaler"
+
+
+@dataclasses.dataclass
 class WandBConfig:
     mode: str = "disabled"
     entity: Optional[str] = None
@@ -248,14 +271,25 @@ class WandBConfig:
 
 
 @dataclasses.dataclass
+class TensorBoardConfig:
+    path: Optional[str] = None
+
+
+@dataclasses.dataclass
 class ExperimentConfig:
     exp_ctrl: ExperimentSaveEvalControl
     wandb: WandBConfig
+    tensorboard: TensorBoardConfig
     # dataflow
     model_rpcs: List[dfg.MFCDef]
     model_worker: List[ModelWorker] = dataclasses.field(default_factory=list)
     # master_worker will be set automatically
     master_worker: Optional[List[MasterWorker]] = None
+    # automatic evaluation
+    auto_eval: bool = False
+    evaluator: AutomaticEvaluator = dataclasses.field(
+        default_factory=AutomaticEvaluator
+    )
 
     def __post_init__(self):
         self.master_worker = [
@@ -429,13 +463,12 @@ class ExperimentConfig:
             data_transfer_pairs.append((mn1, mn2))
         src_rpcs = [rpc for rpc in self.model_rpcs if rpc.is_src]
         data_src_rpc = src_rpcs[0]
-        for r in src_rpcs[1:]:
+        for r in src_rpcs:
             if (
                 data_src_rpc.model_name,
                 r.model_name,
             ) not in data_transfer_pairs:
                 data_transfer_pairs.append((data_src_rpc.model_name, r.model_name))
-        data_transfer_pairs += [(mn, mn) for mn in model_names]
         return data_transfer_pairs
 
     def _resolve_param_realloc_pairs(

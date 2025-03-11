@@ -4,7 +4,6 @@
 
 import dataclasses
 import enum
-import getpass
 import os
 import queue
 import re
@@ -14,15 +13,7 @@ import time
 from typing import Any, Dict, List, Optional, Tuple
 
 import realhf.api.core.system_api as system_api
-from realhf.base import (
-    cluster,
-    logging,
-    monitor,
-    name_resolve,
-    names,
-    network,
-    timeutil,
-)
+from realhf.base import logging, name_resolve, names
 from realhf.base.gpu_utils import set_cuda_device
 
 logger = logging.getLogger("worker")
@@ -580,6 +571,7 @@ class Worker:
         expr_config.lazy_init()
         self.wandb_config = expr_config.wandb
         os.environ["WANDB_MODE"] = self.wandb_config.mode
+        self.tensorboard_config = expr_config.tensorboard
         config = expr_config.resolve_worker_config(
             self.__worker_type, self.__worker_index
         )

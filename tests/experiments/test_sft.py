@@ -35,7 +35,15 @@ def model_class(request):
     ],
 )
 def test_sft_xl(tmp_path_factory, tokenizer, save_path, cpu_hf_model, dp, pp, tp):
-    test_sft(tmp_path_factory, tokenizer, save_path, cpu_hf_model, dp, pp, tp)
+    test_sft(
+        tmp_path_factory,
+        tokenizer,
+        save_path,
+        cpu_hf_model,
+        dp,
+        pp,
+        tp,
+    )
 
 
 @pytest.mark.parametrize(

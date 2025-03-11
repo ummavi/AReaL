@@ -13,14 +13,14 @@ Check if your hardware meets these minimum requirements:
 | Memory | 1 TB |1 TB per node|1 TB per node| 1 TB per node |1 TB per node|
 | Network | NVSwitch |NVSwitch + RoCE 3.2 Tbps|NVSwitch + RoCE 3.2 Tbps| NVSwitch + RoCE 3.2 Tbps |NVSwitch + RoCE 3.2 Tbps|
 | Storage | 1TB |Shared storage (NAS) 10TB|Shared storage (NAS) 10TB| Shared storage (NAS) 10TB |Shared storage (NAS) 10TB|
-| **Total Time (Hours)** | **520** | **150** | **50** | **410** | **130** |
+| **Total Time (Hours)** | **520** | **150** | **50** | **680** | **200** |
 
 Notes:
 - GPUs need to have 80GB memory. Other GPU models with similar specs are acceptable.
 - Single-node training can use local storage, but multi-node training requires shared storage.
 - Total Training Time = Number of Epochs × Number of Steps per Epoch × Training Time per Step
   - Number of Epochs defaults to 10.
-  - Number of Steps per Epoch depends on the dataset size. In this tutorial, the dataset approximately requires 40 steps per epoch for the 1.5B model and 20 steps for the 7B model. The batch sizes for 1.5B and 7B models are different.
+  - Number of steps per epoch depends on the dataset size and batch size. For example, with a dataset of 40,315 samples and a batch size of 1024, each epoch requires training for 40,315 / 1024 = 39.37 steps. Ultimately, an epoch will involve a minimum of 39 steps and a maximum of 40 steps of training.
   - Training Time per Step depends on the number of GPUs used.
 
 ## Software Requirements
@@ -358,7 +358,7 @@ The last entry is used to explain the meaning of key fields:
   - `importance_weight`: The average importance sampling ratio across all tokens in the PPO loss. This value is typically close to 1.
   - `actor_clip_ratio`: The ratio of tokens clipped in the PPO loss to the total number of tokens. This is usually less than 0.1.
   - `actor_loss`: The PPO loss. **It does not show a clear upward or downward trend during training** and should not be used as a reference for model performance.
-  - `avg_seq_len`: The average length of all sampled answers in this step. In a full multi-stage training process, this value will first decrease and then increase.
+  - `avg_seq_len`: The average length of all sequences (i.e., prompts with sampled answers) in this step. In a full multi-stage training process, this value will first decrease and then increase.
   - `no_eos_ratio`: The ratio of sampled answers truncated due to exceeding the maximum generation length. An increase in this value indicates that the average length of answers is increasing.
 
 # Evaluation

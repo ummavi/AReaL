@@ -18,7 +18,11 @@ def model_class(request):
     return request.param
 
 
-def run_model_worker(cfg, mw, barrier):
+def run_model_worker(
+    cfg,
+    mw,
+    barrier,
+):
     constants.set_force_cpu(True)
     # Register all datasets and models
     import realhf.impl.dataset  # isort: skip
@@ -44,7 +48,11 @@ def run_model_worker(cfg, mw, barrier):
             initd = True
 
 
-def run_test_exp(exp_cfg: Experiment, expr_name=None, trial_name=None):
+def run_test_exp(
+    exp_cfg: Experiment,
+    expr_name=None,
+    trial_name=None,
+):
     constants.set_force_cpu(True)
     # Register all datasets and models
     import realhf.impl.dataset  # isort: skip
@@ -74,7 +82,12 @@ def run_test_exp(exp_cfg: Experiment, expr_name=None, trial_name=None):
     testcase = testing.LocalMultiProcessTest(
         world_size=len(exp_setup.model_worker),
         func=[
-            functools.partial(run_model_worker, cfg=exp_cfg, mw=mw, barrier=barrier)
+            functools.partial(
+                run_model_worker,
+                cfg=exp_cfg,
+                mw=mw,
+                barrier=barrier,
+            )
             for mw in exp_setup.model_worker
         ],
         expr_name=expr_name or testing._DEFAULT_EXPR_NAME,
