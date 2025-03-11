@@ -14,7 +14,7 @@
 | 内存    | 1 TB    |每节点 1 TB|每节点 1 TB    |每节点 1 TB    |每节点 1 TB    |
 | 通信    | NVSwitch    |NVSwitch+RoCE 带宽 3.2 Tbps|NVSwitch+RoCE 带宽 3.2 Tbps|NVSwitch+RoCE 带宽 3.2 Tbps|NVSwitch+RoCE 带宽 3.2 Tbps|
 | 存储    | 1TB    |共享存储（NAS）10TB |共享存储（NAS）10TB |共享存储（NAS）10TB |共享存储（NAS）10TB |
-|总训练时间（小时）|520|150|50|410|130|
+|总训练时间（小时）|520|150|50|680|200|
 
 关于硬件要求的说明：
 
@@ -27,7 +27,7 @@
 -  总训练时间 = Epoch 数量 * 每个 Epoch 的 Step 数量 * 单步训练时间
 
     - Epoch 数量默认为 10
-    - 每个 Epoch 的 Step 数量与数据集大小有关。利用我们的数据集， 1.5B 模型每个epoch需要训练 39 步，7B 模型每个epoch需要训练 19 步。不同大小模型使用的batch size也不同
+    - 每个 Epoch 的 Step 数量与数据集大小和 Batch Size 有关。比如数据集为 40315 条，Batch Size 为 1024 时，每个 Epoch 需要训练 40315 / 1024 = 39.37 步，最终一个 Epoch 最少训练 39 步，最多训练 40 步。
     - 单步训练时间与 GPU 卡数有关
 
 ## 软件要求
@@ -380,7 +380,7 @@ python3 -m realhf.apps.quickstart ppo-math --show-args
 + `importance_weight`: PPO loss中重要性采样比率在所有token上的平均值，通常接近1。
 + `actor_clip_ratio`: PPO loss中被clip掉的token占所有token的比率，通常小于0.1。
 + `actor_loss`: PPO loss，**不会随着训练过程有明显的上升或下降趋势**，不应作为模型表现的参考。
-+ `avg_seq_len`: 这一步中采样的所有答案的平均长度。在完整的多阶段训练中，这个值会先下降再上升。
++ `avg_seq_len`: 这一步中采样的所有序列（即提示词和答案相加）的平均长度。在完整的多阶段训练中，这个值会先下降再上升。
 + `no_eos_ratio`: 这一步中采样的所有答案因为超出最大生成长度被截断的比率。这个值上升也代表了答案的平均长度在上升。
 
 # 评估

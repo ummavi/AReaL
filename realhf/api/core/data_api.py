@@ -396,6 +396,7 @@ class SequenceSample:
         group_indices = datapack.ffd_allocate(
             lens, mb_spec.max_tokens_per_mb, min_groups=mb_spec.n_mbs
         )
+        group_indices = sorted([sorted(g) for g in group_indices])
 
         forward_indices = datapack.flat2d(group_indices)
         sample = SequenceSample.reorder(self, forward_indices)
@@ -828,3 +829,25 @@ def make_dataset(
     logger.info(f"Dataset creation/loading time: {time.perf_counter() - tik:.3f}s")
 
     return dataset
+
+
+def gather_stat(src: List[Dict]) -> Dict:
+    cnt, stats = {}, {}
+    for reply in src:
+        # FIXME: understand why the reply can be None
+        if not reply:
+            continue
+        for k, v in reply.items():
+            cnt[k] = cnt.get(k, 0) + 1
+            stats[k] = stats.get(k, 0) + v
+    res = {k: v / cnt for k, v, cnt in zip(stats.keys(), stats.values(), cnt.values())}
+    for k, c in cnt.items():
+        if c != len(src):
+            logger.warning(f"Gathered `{k}` is not present in every returned stats.")
+    for k, v in res.items():
+        if any(abs(v - x.get(k, None)) > 1e-4 for x in src):
+            logger.warning(
+                f"Gathered `{k}` is not all-reduced "
+                f"before returning: ({[x.get(k, None) for x in src]}, {v})."
+            )
+    return res

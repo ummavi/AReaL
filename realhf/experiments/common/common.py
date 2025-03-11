@@ -2,20 +2,14 @@
 # Copyright 2024 Wei Fu & Zhiyu Mei
 # Licensed under the Apache License, Version 2.0 (the "License").
 
-import contextlib
 import dataclasses
-import functools
 import itertools
-import os
-import pprint
-import re
 from collections import defaultdict
 from typing import *
 
 import numpy as np
 import transformers
 from omegaconf import MISSING, OmegaConf
-from transformers.utils import is_accelerate_available
 
 import realhf.base.logging as logging
 from realhf.api.core.config import (
@@ -26,9 +20,10 @@ from realhf.api.core.config import (
     ModelShardID,
     StandaloneModelShardAbstraction,
 )
-from realhf.api.core.dfg import MFCDef, ModelInterfaceType, build_graph
+from realhf.api.core.dfg import MFCDef, ModelInterfaceType
 from realhf.api.core.model_api import HF_MODEL_FAMILY_REGISTRY
 from realhf.api.core.system_api import (
+    AutomaticEvaluator,
     Experiment,
     ExperimentConfig,
     ExperimentSaveEvalControl,
@@ -36,6 +31,7 @@ from realhf.api.core.system_api import (
     ModelWorker,
     Scheduling,
     TasksGroup,
+    TensorBoardConfig,
     WandBConfig,
 )
 from realhf.api.quickstart.device_mesh import (
@@ -60,6 +56,7 @@ from realhf.experiments.common.check import (
 )
 from realhf.experiments.common.utils import (
     AllocationMode,
+    asdict,
     get_topo,
     make_inf_backend_config,
     make_train_backend_config,
@@ -137,6 +134,9 @@ class CommonExperimentConfig(Experiment):
     :param wandb: The WandB initialization config.
         See https://docs.wandb.ai/ref/python/init/ for details.
     :type wandb: WandbConfig
+    :param tensorboard: The tensorboard initialization config.
+        Only the field of `path` is needed to specify the directory of saving the tensorboard events.
+    :type tensorboard: TensorBoardConfig
     :param image_name: The name of the Docker image used by the controller.
         This parameter is only used in SLURM mode.
     :type image_name: str or None
@@ -183,6 +183,16 @@ class CommonExperimentConfig(Experiment):
         torch.cuda.empty_cache() before each RPC in model worker
         If enabled, there will be a ~0.1s overhead per RPC.
     :type torch_cache_mysophobia: bool
+    :param auto_eval: Whether to automatic evaluation in training. When enabled, an evaluation
+        job is submitted whenever a checkpoint is saved, and the result will be logged on disk and
+        on wandb if wandb is active.
+    :type auto_eval: bool
+    :param auto_eval_config: Configuration for automatic evaluation.
+    :type auto_eval_config: AutomaticEvaluator
+    :param cpus_per_master_worker: The number of CPUs for each master worker.
+    :param mem_per_master_worker: The size of memory for each master worker, measured in MB.
+    :param cpus_per_model_worker: The number of CPUs for each model worker.
+    :param mem_per_model_worker: The size of memory for each model worker, measured in MB.
     """
 
     experiment_name: str = MISSING
@@ -194,6 +204,9 @@ class CommonExperimentConfig(Experiment):
     partition: str = "dev"
     schedule_strategy: str = "empty_first"
     wandb: WandBConfig = dataclasses.field(default_factory=WandBConfig)
+    tensorboard: TensorBoardConfig = dataclasses.field(
+        default_factory=TensorBoardConfig
+    )
     image_name: Optional[str] = None
     recover_mode: str = "disabled"
     recover_retries: int = 1
@@ -210,6 +223,16 @@ class CommonExperimentConfig(Experiment):
         default_factory=ExperimentSaveEvalControl
     )
     torch_cache_mysophobia: bool = True
+    # Options for automatic evaluation
+    auto_eval: bool = False
+    auto_eval_config: AutomaticEvaluator = dataclasses.field(
+        default_factory=AutomaticEvaluator
+    )
+    # Options for worker resources
+    cpus_per_master_worker: int = 4
+    mem_per_master_worker: int = 20000
+    cpus_per_model_worker: int = 4
+    mem_per_model_worker: int = 90000
 
     @property
     def models(self) -> Dict[str, ModelTrainEvalConfig]:
@@ -324,18 +347,18 @@ class CommonExperimentConfig(Experiment):
             master_worker=TasksGroup(
                 count=1,
                 scheduling=Scheduling.master_worker_default(
-                    cpu=4,
-                    mem=20000,
+                    cpu=self.cpus_per_master_worker,
+                    mem=self.mem_per_master_worker,
                     nodelist=self.nodelist,
                 ),
             ),
             model_worker=TasksGroup(
                 count=self.n_nodes * self.n_gpus_per_node,
                 scheduling=Scheduling.model_worker_default(
-                    cpu=4,
+                    cpu=self.cpus_per_model_worker,
                     gpu=1,
                     gpu_type=cluster_spec.gpu_type,
-                    mem=90000,
+                    mem=self.mem_per_model_worker,
                     nodelist=self.nodelist,
                 ),
             ),
@@ -541,9 +564,7 @@ class CommonExperimentConfig(Experiment):
                 and self.gen_device_mesh.mapping[i, j]
             ):
                 gen_rpc_alloc = next(
-                    alloc
-                    for alloc in rpc_allocs
-                    if alloc.rpc.interface_type == ModelInterfaceType.GENERATE
+                    alloc for alloc in rpc_allocs if alloc.rpc.is_generate()
                 )
                 model_name = gen_rpc_alloc.rpc.model_name
                 topo = get_topo(
@@ -600,6 +621,10 @@ class CommonExperimentConfig(Experiment):
                 model_rpc_allocs,
             ) in model_name_to_rpc_allocs.items():
                 rpcs = [rpc_alloc.rpc for rpc_alloc in model_rpc_allocs]
+                if self._allocation_mode.is_decoupled() and all(
+                    rpc.is_generate() for rpc in rpcs
+                ):
+                    continue
                 rpc_alloc = model_rpc_allocs[0]
                 model_cfg = self.models[model_name.role]
                 model = get_real_model_config(
@@ -657,9 +682,7 @@ class CommonExperimentConfig(Experiment):
                     rpc.is_generate() for rpc in rpcs
                 ):
                     assert len(rpcs) == 1 and rpcs[0].is_generate(), rpcs
-                    vllm_dict_args: Dict[str, Any] = OmegaConf.to_container(
-                        model_cfg.vllm, resolve=True
-                    )
+                    vllm_dict_args: Dict[str, Any] = asdict(model_cfg.vllm)
                     backend = ModelBackendAbstraction(
                         "vllm",
                         args=dict(
@@ -669,6 +692,17 @@ class CommonExperimentConfig(Experiment):
                     )
                 else:
                     backend = make_inf_backend_config(model_cfg, rpc_alloc.parallel)
+                if any(rpc.is_generate() for rpc in rpcs) and backend.type_ not in [
+                    "vllm",
+                    "sglang",
+                ]:
+                    print(rpcs, model_name, backend.type_)
+                    raise ValueError(
+                        "vLLM or SGLang is not enabled for generation. "
+                        "This behavior has been deprecated. "
+                        "Please set model.vllm.hybrid_train=True "
+                        "or model.sglang.hybrid_train=True."
+                    )
 
                 check_valid_vllm(model_name.role, model_cfg.vllm, rpc_allocs)
                 if mapping[i, j]:
@@ -706,8 +740,11 @@ class CommonExperimentConfig(Experiment):
         return ExperimentConfig(
             exp_ctrl=self.exp_ctrl,
             wandb=self.wandb,
+            tensorboard=self.tensorboard,
             model_rpcs=[rpc_alloc.rpc for rpc_alloc in rpc_allocs],
             model_worker=model_worker,
+            auto_eval=self.auto_eval,
+            evaluator=self.auto_eval_config,
         )
 
     def __check_legal_allocation_options(self):

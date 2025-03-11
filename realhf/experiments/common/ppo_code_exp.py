@@ -3,10 +3,12 @@
 # Licensed under the Apache License, Version 2.0 (the "License").
 import copy
 import dataclasses
+import math
 import os
 import pprint
 from typing import *
 
+import numpy as np
 from omegaconf import DictConfig, OmegaConf
 
 import realhf.base.logging as logging
@@ -19,17 +21,13 @@ from realhf.api.core.dfg import MFCDef, ParamReallocHook
 from realhf.api.core.model_api import GenerationHyperparameters
 from realhf.api.core.system_api import ExperimentConfig
 from realhf.api.quickstart.dataset import PromptOnlyDatasetConfig
-from realhf.api.quickstart.device_mesh import MFCConfig
+from realhf.api.quickstart.device_mesh import DeviceMesh, MFCConfig, RPCAllocation
 from realhf.api.quickstart.entrypoint import register_quickstart_exp
-from realhf.api.quickstart.model import ModelTrainEvalConfig
+from realhf.api.quickstart.model import ModelTrainEvalConfig, ParallelismConfig
 from realhf.experiments.common.common import CommonExperimentConfig
-from realhf.experiments.common.utils import (
-    asdict,
-    resolve_replica_ids,
-    resolve_rpc_hooks,
-)
+from realhf.experiments.common.utils import resolve_replica_ids, resolve_rpc_hooks
 
-logger = logging.getLogger("PPO Math exp", "colored")
+logger = logging.getLogger("PPO Code exp", "colored")
 
 
 @dataclasses.dataclass
@@ -105,7 +103,7 @@ class PPOHyperparameters:
 
 
 @dataclasses.dataclass
-class PPOMATHConfig(CommonExperimentConfig):
+class PPOCODEConfig(CommonExperimentConfig):
     """PPO experiment configuration.
 
     It is a subclass of :class:`CommonExperimentConfig`,
@@ -213,7 +211,7 @@ class PPOMATHConfig(CommonExperimentConfig):
     group_adv_norm: bool = False
     mask_too_long: bool = False
     rw_type: Optional[str] = "sparse"
-    task: str = "math"
+    task: str = "code"
     check_xml_format: bool = False
     use_dense_reward: bool = False
     reward_delta: bool = True
@@ -273,17 +271,18 @@ class PPOMATHConfig(CommonExperimentConfig):
                 f"vllm max seq len to capture {self.actor.vllm.max_seq_len_to_capture} is "
                 f"smaller than the prompt length + generation length {self.dataset.max_prompt_len + self.ppo.gen.max_new_tokens}"
             )
-        if not os.path.exists(os.getenv("REAL_MATH_METADATA_PATH")):
+        if not os.path.exists(os.getenv("REAL_CODE_METADATA_PATH")):
             raise RuntimeError(
-                "Dataset json path REAL_MATH_METADATA_PATH does not exist."
+                "Dataset json path REAL_CODE_METADATA_PATH does not exist."
             )
-        
+
         domain = os.getenv("FUNCTIONCALL_SERVICE_DOMAIN", "")
-        if domain and (not (domain.startswith("http://") and ":" in domain)):
+        if not (domain.startswith("http://") and ":" in domain):
             raise RuntimeError(
                 "function call address FUNCTIONCALL_SERVICE_DOMAIN is invalid."
             )
-            
+
+        
 
         # interfaces
         actor_interface = ModelInterfaceAbstraction(
@@ -294,7 +293,11 @@ class PPOMATHConfig(CommonExperimentConfig):
                 # It is used for unifying the profiling API, which requires to
                 # pass external interface configurations in the launch command.
                 # Customized dataclass objects will not work in that case.
-                "generation_config": asdict(self.ppo.gen),
+                "generation_config": (
+                    OmegaConf.to_container(self.ppo.gen, resolve=True)
+                    if isinstance(self.ppo.gen, (OmegaConf, DictConfig))
+                    else dataclasses.asdict(self.ppo.gen)
+                ),
                 "early_stop_imp_ratio": self.ppo.early_stop_imp_ratio,
                 "adv_norm": self.ppo.adv_norm,
                 "group_size": self.group_size,
@@ -320,7 +323,7 @@ class PPOMATHConfig(CommonExperimentConfig):
         )
         critic_interface.args.pop("eps_clip")
         rw_interface = ModelInterfaceAbstraction(
-            "rw_math",
+            "rw_code",
             args=dict(
                 rw_type=self.rw_type,
                 task=self.task,
@@ -490,7 +493,7 @@ class PPOMATHConfig(CommonExperimentConfig):
     def datasets(self):
         return [
             DatasetAbstraction(
-                "math_prompt",
+                "code_prompt",
                 args=dict(
                     dataset_path=self.dataset.path,
                     max_length=self.dataset.max_prompt_len,
@@ -549,17 +552,13 @@ class PPOMATHConfig(CommonExperimentConfig):
         ######### The main difference from normal PPO #########
 
         model_worker = self._get_model_worker_configs(rpc_allocs)
-        self.auto_eval_config.initial_checkpoint_path = self.actor.path
 
         return ExperimentConfig(
             exp_ctrl=self.exp_ctrl,
             wandb=self.wandb,
-            tensorboard=self.tensorboard,
             model_rpcs=[rpc_alloc.rpc for rpc_alloc in rpc_allocs],
             model_worker=model_worker,
-            auto_eval=self.auto_eval,
-            evaluator=self.auto_eval_config,
         )
 
 
-register_quickstart_exp("ppo-math", PPOMATHConfig)
+register_quickstart_exp("ppo-code", PPOCODEConfig)

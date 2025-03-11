@@ -20,7 +20,7 @@ BASE_MODEL_PATH="/storage/models/${MODEL_NAME}"
 
 # original data
 DATA_PATH="/storage/datasets/${DATASET_NAME}"
-REAL_MATH_METADATA_PATH="/storage/datasets/id2info.json"
+REAL_CODE_METADATA_PATH="/storage/datasets/codeparrot-apps-test.jsonl"
 
 # Option 1: The experiment runs locally with subprocesses.
 # MODE=local
@@ -55,14 +55,15 @@ TRIAL_NAME="${TRAIN_BATCH_SIZE}x${GROUP_SIZE}-n${NODES}"
 # It's the user's responsibility to tune them appropriately.
 unset CLUSTER_SPEC_PATH
 CLUSTER_SPEC_PATH=/storage/ray/cluster_config_on_ray.json \
-REAL_MATH_METADATA_PATH=${REAL_MATH_METADATA_PATH} \
+REAL_CODE_METADATA_PATH=${REAL_CODE_METADATA_PATH} \
+FUNCTIONCALL_SERVICE_DOMAIN="" \
 REAL_GPU_MEMORY_KILL_THRESHOLD=1 \
-python3 -m realhf.apps.quickstart ppo-math \
+python3 -m realhf.apps.quickstart ppo-code \
     mode=$MODE \
     experiment_name=$EXP_NAME \
     trial_name=$TRIAL_NAME \
     wandb.mode=disabled \
-    exp_ctrl.total_train_epochs=10 \
+    exp_ctrl.total_train_epochs=1 \
     exp_ctrl.save_freq_epochs=1 \
     exp_ctrl.ckpt_freq_secs=600 \
     group_size=${GROUP_SIZE} \
@@ -77,7 +78,7 @@ python3 -m realhf.apps.quickstart ppo-math \
     actor.vllm.enforce_eager=False \
     actor.vllm.max_seq_len_to_capture=${MAX_SEQ_LEN_TO_CAPTURE} \
     actor.vllm.max_num_seqs=${MAX_NUM_SEQS} \
-    actor.vllm.gpu_memory_utilization=0.85 \
+    actor.vllm.gpu_memory_utilization=1 \
     actor.vllm.swap_space=64 \
     critic.type._class=$MODEL_FAMILY \
     critic.type.is_critic=True \
