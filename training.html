@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Training &#8212; AReaL Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'training';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Evaluation" href="eval.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="AReaL Documentation - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="AReaL Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Overview
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eval.html">Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Manual</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="developer/exp_launch.html">Launching Procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/master_worker.html">Master Worker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/model_worker.html">Model Worker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/algo_interface.html">Algorithm, Interface &amp; Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/allocation_parallel.html">Allocation &amp; Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contribution Guide</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/inclusionAI/AReaL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/inclusionAI/AReaL/issues/new?title=Issue%20on%20page%20%2Ftraining.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/training.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Training</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-the-ray-cluster">Launch the Ray Cluster</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-ray-head-node">Start the Ray Head Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-ray-worker-nodes">Start Ray Worker Nodes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-cluster-status">Verify Cluster Status</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-an-experiment">Launch an Experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line-options">Command Line Options</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-parameters">Important Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-control-parameters">Training Control Parameters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-the-training-process">Monitoring the Training Process</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-training-statistics">Key Training Statistics</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="training">
+<h1>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h1>
+<section id="launch-the-ray-cluster">
+<h2>Launch the Ray Cluster<a class="headerlink" href="#launch-the-ray-cluster" title="Link to this heading">#</a></h2>
+<section id="start-the-ray-head-node">
+<h3>Start the Ray Head Node<a class="headerlink" href="#start-the-ray-head-node" title="Link to this heading">#</a></h3>
+<p>On the first node, start the Ray Head with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>r1-ray-head<span class="w"> </span>--privileged<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>--shm-size<span class="w"> </span>700g<span class="w"> </span>-v<span class="w"> </span>/storage:/storage<span class="w"> </span>ghcr.io/inclusionai/areal-runtime:v0.3.0<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;ray start --head --port=6379 &amp;&amp; tail -f /dev/null&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="start-ray-worker-nodes">
+<h3>Start Ray Worker Nodes<a class="headerlink" href="#start-ray-worker-nodes" title="Link to this heading">#</a></h3>
+<p>On all other nodes, start the Ray Worker with the following command (skip this step for single-node setups):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace with the actual IP address of the first node</span>
+<span class="nv">RAY_HEAD_IP</span><span class="o">=</span>xxx.xxx.xxx.xxx
+docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>r1-ray-worker<span class="w"> </span>--privileged<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>--shm-size<span class="w"> </span>700g<span class="w"> </span>-v<span class="w"> </span>/storage:/storage<span class="w"> </span>ghcr.io/inclusionai/areal-runtime:v0.3.0<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;ray start --address=</span><span class="nv">$RAY_HEAD_IP</span><span class="s2">:6379 &amp;&amp; tail -f /dev/null&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="verify-cluster-status">
+<h3>Verify Cluster Status<a class="headerlink" href="#verify-cluster-status" title="Link to this heading">#</a></h3>
+<p>Once all nodes are running, check the Ray cluster status by entering the container on the first node:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>r1-ray-head<span class="w"> </span>bash
+ray<span class="w"> </span>status
+</pre></div>
+</div>
+<p>You should see the Ray resource status displayed.</p>
+</section>
+</section>
+<section id="launch-an-experiment">
+<h2>Launch an Experiment<a class="headerlink" href="#launch-an-experiment" title="Link to this heading">#</a></h2>
+<p>On the first node (where the Ray Head is located), run the following to launch an asynchronous PPO experiment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>r1-ray-head<span class="w"> </span>bash
+<span class="nb">cd</span><span class="w"> </span>/storage/codes/AReaL
+pip3<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+python3<span class="w"> </span>training/main_async_ppo.py<span class="w"> </span>--config-name<span class="o">=</span>async-ppo-1.7b-gpu8
+</pre></div>
+</div>
+<p>This command will locate the YAML configuration file <code class="docutils literal notranslate"><span class="pre">async-ppo-1.7b-gpu8.yaml</span></code> in the <code class="docutils literal notranslate"><span class="pre">training/configs/async-ppo</span></code> folder. The meaning of each configuration entry can be found in <code class="docutils literal notranslate"><span class="pre">realhf/api/cli_args.py</span></code>. You can run asynchronous PPO, synchronous PPO, or SFT depending on the script you execute.</p>
+<p>After starting, you’ll see training launch information like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">20250528</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">16.804</span> <span class="n">quickstart</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Running</span> <span class="k">async</span><span class="o">-</span><span class="n">ppo</span><span class="o">-</span><span class="n">math</span> <span class="n">experiment</span><span class="o">.</span>
+<span class="mi">20250528</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">16.804</span> <span class="n">quickstart</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Logs</span> <span class="n">will</span> <span class="n">be</span> <span class="n">dumped</span> <span class="n">to</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">experiments</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span><span class="k">async</span><span class="o">-</span><span class="n">ppo</span><span class="o">-</span><span class="mf">1.7</span><span class="n">b</span><span class="o">-</span><span class="n">gpu8</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">trial</span>
+<span class="mi">20250528</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">16.804</span> <span class="n">quickstart</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Experiment</span> <span class="n">configs</span> <span class="n">will</span> <span class="n">be</span> <span class="n">dumped</span> <span class="n">to</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">experiments</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span><span class="k">async</span><span class="o">-</span><span class="n">ppo</span><span class="o">-</span><span class="mf">1.7</span><span class="n">b</span><span class="o">-</span><span class="n">gpu8</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">trial</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">yaml</span>
+<span class="mi">20250528</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">16.804</span> <span class="n">quickstart</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Model</span> <span class="n">checkpoints</span> <span class="n">will</span> <span class="n">be</span> <span class="n">saved</span> <span class="n">to</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">experiments</span><span class="o">/</span><span class="n">checkpoints</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span><span class="k">async</span><span class="o">-</span><span class="n">ppo</span><span class="o">-</span><span class="mf">1.7</span><span class="n">b</span><span class="o">-</span><span class="n">gpu8</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">trial</span>
+<span class="mi">20250528</span><span class="o">-</span><span class="mi">17</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">19.261</span> <span class="n">quickstart</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Launching</span> <span class="n">experiments</span> <span class="k">with</span> <span class="n">RAY</span><span class="o">...</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>: The saved YAML configuration at <code class="docutils literal notranslate"><span class="pre">/storage/experiments/logs/admin/async-ppo-1.7b-gpu8/my-trial/config.yaml</span></code> can be used to reproduce previous experiments.</p>
+</section>
+<section id="command-line-options">
+<h2>Command Line Options<a class="headerlink" href="#command-line-options" title="Link to this heading">#</a></h2>
+<p>To view all available options:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>realhf.apps.quickstart<span class="w"> </span>async-ppo-math<span class="w"> </span>--help
+</pre></div>
+</div>
+<section id="important-parameters">
+<h3>Important Parameters<a class="headerlink" href="#important-parameters" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">mode</span></code></strong>: Always set to <code class="docutils literal notranslate"><span class="pre">ray</span></code>. Do not change this value when following this tutorial.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">{actor|critic|ref}.path</span></code></strong>: The path to the model files.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dataset.path</span></code></strong>: The path to the dataset JSONL file.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster.fileroot</span></code></strong>: The root path for saving training outputs.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">n_nodes</span></code></strong>: The number of nodes in the cluster.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">n_gpus_per_node</span></code></strong>: The number of GPUs per node.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">allocation_mode</span></code></strong>: The GPU allocation strategy and 3D parallelism configuration for the experiment. Format:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sglang.d${DP1}m${TP1}p${PP1}+d${DP2}m${TP2}p${PP2}</span></code>: Configures parallel strategies for SGLang generation and training respectively. Generation and training use separate GPU sets, and the total GPU count must equal: DP1×TP1×PP1 + DP2×TP2×PP2 = #GPUs.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="training-control-parameters">
+<h3>Training Control Parameters<a class="headerlink" href="#training-control-parameters" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">exp_ctrl.total_train_epochs</span></code></strong>: Number of training epochs (complete dataset iterations).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">exp_ctrl.save_freq_{epochs|steps|secs}</span></code></strong>: Frequency for saving model parameters to persistent storage. Set to null to disable saving.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">exp_ctrl.ckpt_freq_{epochs|steps|secs}</span></code></strong>: Frequency for saving temporary parameters for restart capability.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dataset.train_bs_n_seqs</span></code></strong>: Training batch size (number of prompts sampled per training iteration).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">group_size</span></code></strong>: Number of responses sampled per prompt.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">{actor_train|ref_inf|actor_inf}.mb_spec.max_tokens_per_mb</span></code></strong>: Maximum tokens per mini-batch for forward/backward passes during reference model inference and actor model training. Reduce to avoid OOM errors.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ppo.ppo_n_minibatches</span></code></strong>: Number of mini-batches for dividing data during each PPO update.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ppo.recompute_logprob</span></code></strong>: Whether to compute proximal log probabilities for training.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ppo.use_decoupled_loss</span></code></strong>: Use decoupled loss to stabilize asynchronous training.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ppo.gen.max_new_tokens</span></code></strong>: Maximum tokens to generate per prompt (default: 16k).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ppo.gen.min_new_tokens</span></code></strong>: Minimum tokens to generate per prompt (default: 0).</p></li>
+</ul>
+</section>
+</section>
+<section id="monitoring-the-training-process">
+<h2>Monitoring the Training Process<a class="headerlink" href="#monitoring-the-training-process" title="Link to this heading">#</a></h2>
+<p>We recommend using Weights &amp; Biases (wandb) for monitoring. Run <code class="docutils literal notranslate"><span class="pre">wandb</span> <span class="pre">login</span></code> or set the <code class="docutils literal notranslate"><span class="pre">WANDB_API_KEY</span></code> environment variable. Set <code class="docutils literal notranslate"><span class="pre">wandb.mode=True</span></code> in your configuration to upload training statistics.</p>
+<p>The main log will be saved to <code class="docutils literal notranslate"><span class="pre">/storage/experiments/logs/admin/async-ppo-1.7b-gpu8/my-trial/main.log</span></code> and contains the statistics uploaded to wandb.</p>
+<section id="key-training-statistics">
+<h3>Key Training Statistics<a class="headerlink" href="#key-training-statistics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Epoch</span> <span class="pre">1/5</span></code></strong>: Indicates total epochs required and current epoch being trained.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">6/19</span></code></strong>: Shows current epoch has 19 steps, with the 6th step just completed.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">global</span> <span class="pre">step</span> <span class="pre">6</span></code></strong>: Step count across all epochs.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">task_reward</span></code></strong>: Average reward value of all sampled responses in this step. Should steadily increase during training and eventually stabilize.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">importance_weight</span></code></strong>: Average importance sampling ratio across all tokens in the PPO loss. Typically close to 1.0.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">actor_clip_ratio</span></code></strong>: Ratio of clipped tokens in PPO loss to total tokens. Usually less than 0.1.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">actor_loss</span></code></strong>: PPO loss value. <strong>Does not show clear trends during training</strong> and should not be used as a performance indicator.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">avg_seq_len</span></code></strong>: Average length of all sequences (prompts with sampled responses) in this step.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">no_eos_ratio</span></code></strong>: Ratio of sampled responses truncated due to exceeding maximum generation length. An increase indicates longer average response lengths.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="installation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="eval.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Evaluation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-the-ray-cluster">Launch the Ray Cluster</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-ray-head-node">Start the Ray Head Node</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-ray-worker-nodes">Start Ray Worker Nodes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-cluster-status">Verify Cluster Status</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-an-experiment">Launch an Experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line-options">Command Line Options</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-parameters">Important Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-control-parameters">Training Control Parameters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-the-training-process">Monitoring the Training Process</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-training-statistics">Key Training Statistics</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Wei Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

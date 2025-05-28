@@ -1,0 +1,1105 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tutorial (中文) &#8212; AReaL Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorial/tutorial_v0_2_0_zh';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="AReaL Documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="AReaL Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Overview
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../training.html">RL Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eval.html">Evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Manual</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer/exp_launch.html">Launching Procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/master_worker.html">Master Worker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/model_worker.html">Model Worker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/algo_interface.html">Algorithm, Interface &amp; Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/allocation_parallel.html">Allocation &amp; Parallelism</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../contrib.html">Contribution Guide</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/inclusionAI/AReaL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/inclusionAI/AReaL/issues/new?title=Issue%20on%20page%20%2Ftutorial/tutorial_v0_2_0_zh.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/tutorial/tutorial_v0_2_0_zh.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tutorial (中文)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">前置要求</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">硬件要求</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">软件要求</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">一键搭建环境并启动训练</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">环境配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">代码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">数据集</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ray">启动 Ray 集群</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rl">RL训练</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commandline-options">Commandline Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">过程观测</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">查看训练进度</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">查看训练的效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">评估</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">评估流程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">评估结果</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">额外说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">关键参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">运行时间</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">自动恢复</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outofmemory">一系列OutOfMemory错误</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#torch-cuda-cudaoutofmemoryerror">torch.cuda.CudaOutOfMemoryError</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cuda-error-out-of-memory">CUDA error: out of memory</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#runtimeerror-aborted-due-to-the-lack-of-cpu-swap-space">RuntimeError: Aborted due to the lack of CPU swap space.</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cuda-error-an-illegal-memory-access-was-encountered">CUDA error: an illegal memory access was encountered</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="tutorial">
+<h1>Tutorial (中文)<a class="headerlink" href="#tutorial" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>前置要求<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3>硬件要求<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>为了能正常完成训练流程，请参照下表确认你的硬件是否满足要求：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>模型大小</strong></p></th>
+<th class="head"><p><strong>1.5B</strong></p></th>
+<th class="head"><p><strong>1.5B</strong></p></th>
+<th class="head"><p><strong>1.5B</strong></p></th>
+<th class="head"><p><strong>7B</strong></p></th>
+<th class="head"><p><strong>7B</strong></p></th>
+<th class="head"><p><strong>32B</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>节点</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p>16</p></td>
+<td><p>4</p></td>
+<td><p>16</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPU</p></td>
+<td><p>8 张 H800</p></td>
+<td><p>每节点 8 张 H800</p></td>
+<td><p>每节点 8 张 H800</p></td>
+<td><p>每节点 8 张 H800</p></td>
+<td><p>每节点 8 张 H800</p></td>
+<td><p>每节点 8 张 H800</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU</p></td>
+<td><p>48 核</p></td>
+<td><p>每节点 48 核</p></td>
+<td><p>每节点 48 核</p></td>
+<td><p>每节点 48 核</p></td>
+<td><p>每节点 48 核</p></td>
+<td><p>每节点 48 核</p></td>
+</tr>
+<tr class="row-odd"><td><p>内存</p></td>
+<td><p>1 TB</p></td>
+<td><p>每节点 1 TB</p></td>
+<td><p>每节点 1 TB</p></td>
+<td><p>每节点 1 TB</p></td>
+<td><p>每节点 1 TB</p></td>
+<td><p>每节点 1 TB</p></td>
+</tr>
+<tr class="row-even"><td><p>通信</p></td>
+<td><p>NVSwitch</p></td>
+<td><p>NVSwitch+RoCE 带宽 3.2 Tbps</p></td>
+<td><p>NVSwitch+RoCE 带宽 3.2 Tbps</p></td>
+<td><p>NVSwitch+RoCE 带宽 3.2 Tbps</p></td>
+<td><p>NVSwitch+RoCE 带宽 3.2 Tbps</p></td>
+<td><p>NVSwitch+RoCE 带宽 3.2 Tbps</p></td>
+</tr>
+<tr class="row-odd"><td><p>存储</p></td>
+<td><p>1TB</p></td>
+<td><p>共享存储（NAS）10TB</p></td>
+<td><p>共享存储（NAS）10TB</p></td>
+<td><p>共享存储（NAS）10TB</p></td>
+<td><p>共享存储（NAS）10TB</p></td>
+<td><p>共享存储（NAS）10TB</p></td>
+</tr>
+<tr class="row-even"><td><p>BatchSize x GroupSize</p></td>
+<td><p>512x16</p></td>
+<td><p>512x16</p></td>
+<td><p>512x16</p></td>
+<td><p>512x16</p></td>
+<td><p>512x16</p></td>
+<td><p>512x16</p></td>
+</tr>
+<tr class="row-odd"><td><p>单步训练时间（秒）</p></td>
+<td><p><strong>3461</strong></p></td>
+<td><p><strong>997</strong></p></td>
+<td><p><strong>391</strong></p></td>
+<td><p><strong>2275</strong></p></td>
+<td><p><strong>815</strong></p></td>
+<td><p><strong>6707</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>训练至收敛需要步数</p></td>
+<td><p><strong>~250</strong></p></td>
+<td><p><strong>~250</strong></p></td>
+<td><p><strong>~250</strong></p></td>
+<td><p><strong>~400</strong></p></td>
+<td><p><strong>~400</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>总训练时间（小时）</p></td>
+<td><p><strong>~240</strong></p></td>
+<td><p><strong>~69</strong></p></td>
+<td><p><strong>~27</strong></p></td>
+<td><p><strong>~252</strong></p></td>
+<td><p><strong>~90</strong></p></td>
+<td><p>-</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>关于硬件要求的说明：</p>
+<ul class="simple">
+<li><p>GPU 需要 80GB 显存，可以选择同级别其他 GPU 型号。</p></li>
+<li><p>单节点训练时可以使用本地存储，但多节点训练必须要提供共享存储，否则无法进行训练。</p></li>
+<li><p>目前32B模型没有训练出有意义的结果，所以无法估计训练到收敛需要的步数和时间。</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>软件要求<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>本教程提供 Docker镜像。以下是经过测试的软件版本，可以参考如下软件版本进行配置。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>版本说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>OS</p></td>
+<td><p>CentOS 7 / Ubuntu 22.04 或其他满足下方软件运行的系统</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVIDIA Driver</p></td>
+<td><p>版本：550.127.08</p></td>
+</tr>
+<tr class="row-even"><td><p>CUDA</p></td>
+<td><p>版本：12.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>Git LFS</p></td>
+<td><p>参考：<a class="reference external" href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage">Git LFS 安装指南</a> 主要用于下载模型，数据集，AReaL 工程代码</p></td>
+</tr>
+<tr class="row-even"><td><p>Docker</p></td>
+<td><p>版本：27.5.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVIDIA Container Toolkit</p></td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html">NVIDIA Container Toolkit 安装指南</a></p></td>
+</tr>
+<tr class="row-even"><td><p>镜像</p></td>
+<td><p><a class="reference external" href="http://ghcr.io/inclusionai/areal-runtime:v0.3.0">ghcr.io/inclusionai/areal-runtime:v0.3.0</a> 这个镜像中包含运行依赖和 Ray 的相关组件</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>由于 NVIDIA Driver 和 CUDA 的安装以及共享存储的挂载与节点和系统版本有关，请自行完成安装，本教程不进行介绍。</p>
+<p>如果是多节点训练，请先将共享存储挂载到每个节点的 <code class="docutils literal notranslate"><span class="pre">/storage</span></code> 目录上，后续下载的内容都将放在这个目录下，并且 AReaL 容器也会将该目录挂载到容器的 <code class="docutils literal notranslate"><span class="pre">/storage</span></code>，以便训练时访问。</p>
+</section>
+</section>
+<section id="id4">
+<h2>一键搭建环境并启动训练<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>本节提供一个一键安装脚本，自动完成节点的环境配置工作：</p>
+<ol class="arabic simple">
+<li><p>安装 Docker，Git LFS，NVIDIA Container Toolkit</p></li>
+<li><p>在每个节点上拉取 AReaL 镜像</p></li>
+<li><p>下载 AReaL 代码，模型，数据集</p></li>
+<li><p>搭建 Ray 集群</p></li>
+<li><p>【可选】在 Ray 集群中启动一个训练任务</p></li>
+</ol>
+<p>请选择任意一个节点执行如下操作：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/storage/codes
+<span class="nb">cd</span><span class="w"> </span>/storage/codes/
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/inclusionAI/AReaL.git
+<span class="nb">cd</span><span class="w"> </span>/storage/codes/AReaL
+
+python<span class="w"> </span>./examples/env/setup_env_and_start_train.py<span class="w"> </span>setup<span class="w"> </span>--private_key_file<span class="w"> </span>/path/to/ssh_key<span class="w"> </span>--ssh_port<span class="w"> </span><span class="m">22</span><span class="w"> </span>--username<span class="w"> </span>root<span class="w"> </span>--hostnames<span class="w"> </span>NODE_IP_1<span class="w"> </span>NODE_IP_2<span class="w"> </span>NODE_IP_3<span class="w"> </span>NODE_IP_4<span class="w"> </span>--train_param<span class="w"> </span><span class="m">1</span>.5B_n1
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">setup_env_and_start_train.py</span> <span class="pre">setup</span></code> 参数说明：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">private_key_file</span></code>：SSH 私钥文件，用于连接节点</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ssh_port</span></code>：SSH 端口</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code>：SSH 用户名</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostnames</span></code>：IP 列表，用空格分割。可以是 1/4/16 个节点 IP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">train_param</span></code>：【可选】训练参数，用于在完成环境搭建后直接启动一个训练任务。可选值为 <code class="docutils literal notranslate"><span class="pre">1.5B_n1</span></code>，<code class="docutils literal notranslate"><span class="pre">1.5B_n4</span></code>，<code class="docutils literal notranslate"><span class="pre">1.5B_n16</span></code>，<code class="docutils literal notranslate"><span class="pre">7B_n4</span></code>，<code class="docutils literal notranslate"><span class="pre">7B_n16</span></code></p></li>
+</ul>
+<p>如果因为环境差异，无法运行本节中的脚本或运行出现错误，也可以按照本教程后续章节的内容手动完成环境配置和启动训练。</p>
+</section>
+<section id="id5">
+<h2>环境配置<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>由于使用了共享存储，下载操作只需要在一个节点上完成。</p>
+<section id="id6">
+<h3>代码<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>将 AReaL 项目代码克隆到 <code class="docutils literal notranslate"><span class="pre">/storage/codes</span></code> 中：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/storage/codes
+<span class="nb">cd</span><span class="w"> </span>/storage/codes/
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/inclusionAI/AReaL.git
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>数据集<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>我们提供了用于训练的数据集，请下载数据集并放置在 /storage/datasets/</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/storage/datasets/
+<span class="nb">cd</span><span class="w"> </span>/storage/datasets/
+wget<span class="w"> </span>https://huggingface.co/datasets/inclusionAI/AReaL-RL-Data/resolve/main/data/boba_106k_0319.jsonl?download<span class="o">=</span><span class="nb">true</span>
+wget<span class="w"> </span>https://huggingface.co/datasets/inclusionAI/AReaL-RL-Data/resolve/main/data/orz-zero_56k_0319.jsonl?download<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>模型<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>我们基于开源模型进行训练，该模型可以从 HuggingFace Hub 直接下载（请确保已经安装了 Git LFS）：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">models</span>
+<span class="n">cd</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">models</span>
+<span class="n">GIT_LFS_SKIP_SMUDGE</span><span class="o">=</span><span class="mi">1</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">huggingface</span><span class="o">.</span><span class="n">co</span><span class="o">/</span><span class="n">deepseek</span><span class="o">-</span><span class="n">ai</span><span class="o">/</span><span class="n">DeepSeek</span><span class="o">-</span><span class="n">R1</span><span class="o">-</span><span class="n">Distill</span><span class="o">-</span><span class="n">Qwen</span><span class="o">-</span><span class="mi">7</span><span class="n">B</span>
+<span class="n">cd</span> <span class="n">DeepSeek</span><span class="o">-</span><span class="n">R1</span><span class="o">-</span><span class="n">Distill</span><span class="o">-</span><span class="n">Qwen</span><span class="o">-</span><span class="mi">7</span><span class="n">B</span>
+<span class="n">git</span> <span class="n">lfs</span> <span class="n">pull</span>
+</pre></div>
+</div>
+<p>你也可以在安装 PyPI 和 huggingface_hub 后利用 huggingface CLI 进行下载，具体请参考<a class="reference external" href="https://huggingface.co/docs/huggingface_hub/guides/cli">官方文档</a></p>
+</section>
+<section id="ray">
+<h3>启动 Ray 集群<a class="headerlink" href="#ray" title="Link to this heading">#</a></h3>
+<p>在执行这一步之前，请先拉取 AReaL 环境镜像，这个镜像中已经包含了 Ray 相关的组件。</p>
+<p>在第一个节点上执行如下命令启动 Ray Head：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>r1-ray-head<span class="w"> </span>--privileged<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>--shm-size<span class="w"> </span>700g<span class="w"> </span>-v<span class="w"> </span>/storage:/storage<span class="w"> </span>ghcr.io/inclusionai/areal-runtime:v0.3.0<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;ray start --head --port=6379 &amp;&amp; tail -f /dev/null&quot;</span>
+</pre></div>
+</div>
+<p>在除了第一个节点以外的每个节点上执行如下命令启动 Ray Worker（如果只有一个节点，这一步就不用执行了）：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># RAY_HEAD_IP 是第一个节点的 IP</span>
+<span class="nv">RAY_HEAD_IP</span><span class="o">=</span>xxx.xxx.xxx.xxx
+docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>r1-ray-worker<span class="w"> </span>--privileged<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>--shm-size<span class="w"> </span>700g<span class="w"> </span>-v<span class="w"> </span>/storage:/storage<span class="w"> </span>ghcr.io/inclusionai/areal-runtime:v0.3.0<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;ray start --address=</span><span class="nv">$RAY_HEAD_IP</span><span class="s2">:6379 &amp;&amp; tail -f /dev/null&quot;</span>
+</pre></div>
+</div>
+<p>全部启动完成后，在第一个节点上通过 docker exec 进入容器，查看 Ray 集群的状态：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>r1-ray-head<span class="w"> </span>bash
+ray<span class="w"> </span>status
+</pre></div>
+</div>
+<p>可以看到 Ray 的资源情况，输出如下（这是一个 16 节点 128 卡的集群，根据你的节点数量，这里的输出会有所不同）：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">========</span> <span class="n">Autoscaler</span> <span class="n">status</span><span class="p">:</span> <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">22</span> <span class="mi">14</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">51.061250</span> <span class="o">========</span>
+<span class="n">Node</span> <span class="n">status</span>
+<span class="o">---------------------------------------------------------------</span>
+<span class="n">Active</span><span class="p">:</span>
+ <span class="mi">1</span> <span class="n">node_d5634ae61bfe6732d957811bed65c8a39f13ece07e0326f941acbc4e</span>
+ <span class="mi">1</span> <span class="n">node_23b0c08045c9a39bc4c454cae298ee531d9a474215ac5e77a5b01e74</span>
+ <span class="mi">1</span> <span class="n">node_bc1016320658e92645f29cecb8aaf51c0b7e01a44e8ac9c814dfee59</span>
+ <span class="mi">1</span> <span class="n">node_4e7d15e9cee9ee0da5d65e45f1e346228c52bc0c557511c6eeab40dc</span>
+ <span class="mi">1</span> <span class="n">node_c5bcf15e28a00515be5d2a7e8e33d71f0f57cdfaf1003db9e0c74788</span>
+ <span class="mi">1</span> <span class="n">node_ec3f6ee8f6fdf3a5392bb4dac244668da75d094e084dcbb520ce2525</span>
+ <span class="mi">1</span> <span class="n">node_dc2f1eef88126ae4ac7902574714af9ab74b78ba037217e73e063639</span>
+ <span class="mi">1</span> <span class="n">node_a4728608c1fda187dc33bb24e831c42fe5c8a582ad428b6e595933bc</span>
+ <span class="mi">1</span> <span class="n">node_970379a3ba750ee3b13e31612b6a6b758d50bd4943555b2a13d1bd61</span>
+ <span class="mi">1</span> <span class="n">node_bf6b658bea9e437fcb642a2d881425662a689d668c92fe1545899b36</span>
+ <span class="mi">1</span> <span class="n">node_2c69511f410d9360f1d05893fde2c97dd32240e0315afea9b2d286a3</span>
+ <span class="mi">1</span> <span class="n">node_e4c90c17cc48ad469d123041d3302dcff1f7a82a4805279300812b19</span>
+ <span class="mi">1</span> <span class="n">node_3f772cbffb206c30b6ccedade83789d78397804bab874ee59563cb96</span>
+ <span class="mi">1</span> <span class="n">node_429bd5115b5590b612590bb455f2d3ed4f77055d746a184baf807655</span>
+ <span class="mi">1</span> <span class="n">node_75071820f2c16dc51fa271316b72cd45335ec877c06450d292ab7d54</span>
+ <span class="mi">1</span> <span class="n">node_6f4323f9038248d82b91321e2c4ca5fa99e65efa2d976c0b896a8964</span>
+<span class="n">Pending</span><span class="p">:</span>
+ <span class="p">(</span><span class="n">no</span> <span class="n">pending</span> <span class="n">nodes</span><span class="p">)</span>
+<span class="n">Recent</span> <span class="n">failures</span><span class="p">:</span>
+ <span class="p">(</span><span class="n">no</span> <span class="n">failures</span><span class="p">)</span>
+
+<span class="n">Resources</span>
+<span class="o">---------------------------------------------------------------</span>
+<span class="n">Usage</span><span class="p">:</span>
+ <span class="mf">0.0</span><span class="o">/</span><span class="mf">2128.0</span> <span class="n">CPU</span>
+ <span class="mf">0.0</span><span class="o">/</span><span class="mf">128.0</span> <span class="n">GPU</span>
+ <span class="mi">0</span><span class="n">B</span><span class="o">/</span><span class="mf">21.08</span><span class="n">TiB</span> <span class="n">memory</span>
+ <span class="mi">0</span><span class="n">B</span><span class="o">/</span><span class="mf">2.91</span><span class="n">TiB</span> <span class="n">object_store_memory</span>
+
+<span class="n">Demands</span><span class="p">:</span>
+ <span class="p">(</span><span class="n">no</span> <span class="n">resource</span> <span class="n">demands</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="rl">
+<h2>RL训练<a class="headerlink" href="#rl" title="Link to this heading">#</a></h2>
+<p>在进行分布式训练之前，请确保已经启动了 Ray 集群，并且集群状态正常。
+然后在第一个节点（Ray Head 所在节点），进入容器：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">r1</span><span class="o">-</span><span class="n">ray</span><span class="o">-</span><span class="n">head</span> <span class="n">bash</span>
+<span class="n">cd</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">codes</span><span class="o">/</span><span class="n">AReaL</span>
+</pre></div>
+</div>
+<p>选择匹配硬件环境的一个配置运行即可：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>realhf.apps.quickstart<span class="w"> </span>ppo-math<span class="w"> </span>--config<span class="w"> </span>./examples/configs/7B-distill/ppo-7B-distill-gpus-128.yaml
+</pre></div>
+</div>
+<p>启动后，在终端可以看到启动日志：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>              ╭─────────────────────────────────────────────────╮               
+              │ Setting PPOMATHConfig with the Following Values │               
+              ╰─────────────────────────────────────────────────╯               
+
+───────────────────────── Current Configuration Begin ──────────────────────────
+actor (ModelTrainEvalConfig)
+    actor.type (ModelFamily)
+        actor.type._class (str) - qwen2
+        actor.type.size (int) - 7
+        actor.type.is_critic (bool) - False
+...
+────────────────────────── Current Configuration End ───────────────────────────
+ 
+20250222-10:26:34.877 quickstart INFO: Running ppo-math experiment.
+20250222-10:44:15.581 quickstart INFO: Logs will be dumped to /storage/ray/experiments/logs/root/ppo-7B-distill-gpus-128/512x16
+20250222-10:44:15.581 quickstart INFO: Model checkpoints will be saved to /storage/ray/experiments/checkpoints/root/ppo-7B-distill-gpus-128/512x16
+20250222-10:26:36.408 quickstart INFO: Launching experiments with RAY...
+</pre></div>
+</div>
+<p>如果运行过程中出现错误（比如出现 Error 关键字），请参考Troubleshooting解决。</p>
+<section id="commandline-options">
+<h3>Commandline Options<a class="headerlink" href="#commandline-options" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>realhf.apps.quickstart<span class="w"> </span>ppo-math<span class="w"> </span>--help
+</pre></div>
+</div>
+<p>其中重要的参数的说明如下：</p>
+<ul class="simple">
+<li><p>mode：总是为 ray，参考本教程进行训练时不要改成其他值。</p></li>
+<li><p>{actor|critic|ref}.path：模型的路径</p></li>
+<li><p>dataset.path：数据集 jsonl 文件的路径</p></li>
+<li><p>external_configs.cluster_config：设置 cluster_config 的配置，比如 fileroot 是存放训练输出的根目录。</p></li>
+<li><p>n_nodes：节点数量</p></li>
+<li><p>n_gpus_per_node：每个节点的 GPU 数量</p></li>
+<li><p>allocation_mode：实验中模型的 GPU 分配和 3D 并行策略，推荐的策略有以下形式:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sglang.d${DP1}m${TP1}p${PP1}+d${DP2}m${TP2}p${PP2}</span></code>: 分别配置 SGLang 生成和训练的并行策略，生成和训练分离，使用两部分不同的 GPU。二者所用的GPU数量相加要等于总的 GPU 数量，即 DP1xTP1xPP1+DP2xTP2xPP2=#GPUs。</p></li>
+</ul>
+</li>
+<li><p>exp_ctrl.total_train_epochs：训练的 epoch 数量（即迭代整个数据集的次数）</p></li>
+<li><p>exp_ctrl.save_freq_{epochs|steps|secs}：保存持久化存储模型参数的频率，如果设成 null 会不保存模型</p></li>
+<li><p>exp_ctrl.ckpt_freq_{epochs|steps|secs}：保存临时参数用于重启的频率</p></li>
+<li><p>dataset.train_bs_n_seqs：训练的批量大小，即每次训练需要采样的 prompt 数量</p></li>
+<li><p>group_size：每个 prompt 需要采样的答案数量</p></li>
+<li><p>{actor_train|ref_inf}.mb_spec.max_tokens_per_mb：reference模型推理和actor模型训练每次forward/backward数据中最大的token数量，可以减小以避免OOM错误。这些数据会累积梯度进行一次参数更新。</p></li>
+<li><p>ppo.ppo_n_minibatches：每次PPO更新中会把所有数据划分成多少份以此进行loss计算和参数更新。</p></li>
+<li><p>ppo.gen.max_new_tokens：每条prompt生成的最大token数，默认训练脚本中为16k。</p></li>
+<li><p>ppo.gen.min_new_tokens：每条prompt生成的最小token数，默认为0。</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>过程观测<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>这里以 16 节点的运行日志为例（1 节点和 4 节点也一样），说明几个观察训练进度和效果的方法。</p>
+<section id="id10">
+<h4>查看训练进度<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<p>搜索日志中的 Epoch 关键字，查看总的 Epoch 数量和 Step 数量：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-11:11:56.997<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Epoch<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>step<span class="w"> </span><span class="m">1</span>/19<span class="w"> </span><span class="o">(</span>global<span class="w"> </span>step<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>finishes.<span class="w"> </span>Average<span class="w"> </span><span class="c1">#tokens per batch is 111847. #End to end# execution time: *2124.429*s. Total time consumption: 2283.862s. </span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-11:52:02.719<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Epoch<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>step<span class="w"> </span><span class="m">2</span>/19<span class="w"> </span><span class="o">(</span>global<span class="w"> </span>step<span class="w"> </span><span class="m">2</span><span class="o">)</span><span class="w"> </span>finishes.<span class="w"> </span>Average<span class="w"> </span><span class="c1">#tokens per batch is 111847. #End to end# execution time: *2405.716*s. Total time consumption: 4689.584s. </span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-12:27:25.084<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Epoch<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>step<span class="w"> </span><span class="m">3</span>/19<span class="w"> </span><span class="o">(</span>global<span class="w"> </span>step<span class="w"> </span><span class="m">3</span><span class="o">)</span><span class="w"> </span>finishes.<span class="w"> </span>Average<span class="w"> </span><span class="c1">#tokens per batch is 111847. #End to end# execution time: *2122.318*s. Total time consumption: 6811.949s. Estimated remaining time: 33957.093s. </span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-13:05:58.246<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Epoch<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>step<span class="w"> </span><span class="m">4</span>/19<span class="w"> </span><span class="o">(</span>global<span class="w"> </span>step<span class="w"> </span><span class="m">4</span><span class="o">)</span><span class="w"> </span>finishes.<span class="w"> </span>Average<span class="w"> </span><span class="c1">#tokens per batch is 111847. #End to end# execution time: *2313.134*s. Total time consumption: 9125.111s. Estimated remaining time: 33265.891s. </span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-13:44:14.349<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Epoch<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>step<span class="w"> </span><span class="m">5</span>/19<span class="w"> </span><span class="o">(</span>global<span class="w"> </span>step<span class="w"> </span><span class="m">5</span><span class="o">)</span><span class="w"> </span>finishes.<span class="w"> </span>Average<span class="w"> </span><span class="c1">#tokens per batch is 111847. #End to end# execution time: *2296.076*s. Total time consumption: 11421.214s. Estimated remaining time: 31413.800s. </span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-14:22:33.864<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Epoch<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>step<span class="w"> </span><span class="m">6</span>/19<span class="w"> </span><span class="o">(</span>global<span class="w"> </span>step<span class="w"> </span><span class="m">6</span><span class="o">)</span><span class="w"> </span>finishes.<span class="w"> </span>Average<span class="w"> </span><span class="c1">#tokens per batch is 111847. #End to end# execution time: *2299.448*s. Total time consumption: 13720.729s. Estimated remaining time: 29350.673s.</span>
+</pre></div>
+</div>
+<p>出现了 6 条日志信息，以最后一条信息的内容说明各个字段的含义：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Epoch</span> <span class="pre">1/1</span></code>：表示总共需要训练 1 个 Epochs，当前在训练第 1 个。这里作为例子总共只训练 1 个 Epoch，正常训练应该是 10 个 Epochs 或者更多。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">6/19</span></code>：表示当前 Epoch 有 19 个 Steps，当前在训练第 6 个</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">global</span> <span class="pre">step</span> <span class="pre">6</span></code>： 表示当前 Step 在所有 Epochs 的 Steps 里的序号</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#End</span> <span class="pre">to</span> <span class="pre">end#</span> <span class="pre">execution</span> <span class="pre">time:</span> <span class="pre">*2299.448*s</span></code>：表示当前 Step 训练耗费了 2299.448 秒</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">time</span> <span class="pre">consumption:</span> <span class="pre">13720.729s</span></code>：从训练启动开始一共耗费了 13720.729 秒</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Estimated</span> <span class="pre">remaining</span> <span class="pre">time:</span> <span class="pre">29350.673s</span></code>：预计完成训练还需要 29350.673 秒</p></li>
+</ul>
+</section>
+<section id="id11">
+<h4>查看训练的效果<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<p>搜索日志中的 <code class="docutils literal notranslate"><span class="pre">task_reward</span></code> 关键字</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-11:11:56.991<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>RPC<span class="w"> </span>name<span class="w"> </span>actor_train<span class="w"> </span>returns<span class="w"> </span><span class="o">{</span><span class="s1">&#39;ppo_approx_kl&#39;</span>:<span class="w"> </span>-2.2640759198111482e-05,<span class="w"> </span><span class="s1">&#39;actor_loss&#39;</span>:<span class="w"> </span><span class="m">1</span>.1128166761409375e-06,<span class="w"> </span><span class="s1">&#39;actor_clip_ratio&#39;</span>:<span class="w"> </span><span class="m">2</span>.1122002635820536e-07,<span class="w"> </span><span class="s1">&#39;importance_weight&#39;</span>:<span class="w"> </span><span class="m">1</span>.0000014305114746,<span class="w"> </span><span class="s1">&#39;task_reward&#39;</span>:<span class="w"> </span>-0.2996826171875,<span class="w"> </span><span class="s1">&#39;kl_reward&#39;</span>:<span class="w"> </span>-2.27004832709099e-07,<span class="w"> </span><span class="s1">&#39;final_reward&#39;</span>:<span class="w"> </span>-0.30145370960235596,<span class="w"> </span><span class="s1">&#39;advantage&#39;</span>:<span class="w"> </span><span class="m">0</span>.003593671601265669,<span class="w"> </span><span class="s1">&#39;avg_seq_len&#39;</span>:<span class="w"> </span><span class="m">7907</span>.8955078125,<span class="w"> </span><span class="s1">&#39;avg_prompt_len&#39;</span>:<span class="w"> </span><span class="m">105</span>.845703125,<span class="w"> </span><span class="s1">&#39;n_tokens&#39;</span>:<span class="w"> </span><span class="m">127828786</span>.0,<span class="w"> </span><span class="s1">&#39;n_valid_tokens&#39;</span>:<span class="w"> </span><span class="m">127828786</span>.0,<span class="w"> </span><span class="s1">&#39;n_seqs&#39;</span>:<span class="w"> </span><span class="m">16384</span>.0,<span class="w"> </span><span class="s1">&#39;no_eos_ratio&#39;</span>:<span class="w"> </span><span class="m">0</span>.122802734375,<span class="w"> </span><span class="s1">&#39;disable_value&#39;</span>:<span class="w"> </span><span class="m">1</span>.0,<span class="w"> </span><span class="s1">&#39;mask_no_eos_with_zero&#39;</span>:<span class="w"> </span><span class="m">0</span>.0<span class="o">}</span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-11:52:02.712<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>RPC<span class="w"> </span>name<span class="w"> </span>actor_train<span class="w"> </span>returns<span class="w"> </span><span class="o">{</span><span class="s1">&#39;ppo_approx_kl&#39;</span>:<span class="w"> </span>-2.493159263394773e-05,<span class="w"> </span><span class="s1">&#39;actor_loss&#39;</span>:<span class="w"> </span>-3.846728588996484e-07,<span class="w"> </span><span class="s1">&#39;actor_clip_ratio&#39;</span>:<span class="w"> </span><span class="m">3</span>.16789424914532e-07,<span class="w"> </span><span class="s1">&#39;importance_weight&#39;</span>:<span class="w"> </span><span class="m">0</span>.9999996423721313,<span class="w"> </span><span class="s1">&#39;task_reward&#39;</span>:<span class="w"> </span>-0.6793212890625,<span class="w"> </span><span class="s1">&#39;kl_reward&#39;</span>:<span class="w"> </span>-2.536311853873485e-07,<span class="w"> </span><span class="s1">&#39;final_reward&#39;</span>:<span class="w"> </span>-0.6813737154006958,<span class="w"> </span><span class="s1">&#39;advantage&#39;</span>:<span class="w"> </span><span class="m">0</span>.004844569601118565,<span class="w"> </span><span class="s1">&#39;avg_seq_len&#39;</span>:<span class="w"> </span><span class="m">8203</span>.9453125,<span class="w"> </span><span class="s1">&#39;avg_prompt_len&#39;</span>:<span class="w"> </span><span class="m">111</span>.892578125,<span class="w"> </span><span class="s1">&#39;n_tokens&#39;</span>:<span class="w"> </span><span class="m">132580185</span>.0,<span class="w"> </span><span class="s1">&#39;n_valid_tokens&#39;</span>:<span class="w"> </span><span class="m">132580185</span>.0,<span class="w"> </span><span class="s1">&#39;n_seqs&#39;</span>:<span class="w"> </span><span class="m">16384</span>.0,<span class="w"> </span><span class="s1">&#39;no_eos_ratio&#39;</span>:<span class="w"> </span><span class="m">0</span>.13812255859375,<span class="w"> </span><span class="s1">&#39;disable_value&#39;</span>:<span class="w"> </span><span class="m">1</span>.0,<span class="w"> </span><span class="s1">&#39;mask_no_eos_with_zero&#39;</span>:<span class="w"> </span><span class="m">0</span>.0<span class="o">}</span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-12:27:25.077<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>RPC<span class="w"> </span>name<span class="w"> </span>actor_train<span class="w"> </span>returns<span class="w"> </span><span class="o">{</span><span class="s1">&#39;ppo_approx_kl&#39;</span>:<span class="w"> </span>-2.572356243035756e-05,<span class="w"> </span><span class="s1">&#39;actor_loss&#39;</span>:<span class="w"> </span>-5.036404786551429e-07,<span class="w"> </span><span class="s1">&#39;actor_clip_ratio&#39;</span>:<span class="w"> </span><span class="m">1</span>.8960582792715286e-07,<span class="w"> </span><span class="s1">&#39;importance_weight&#39;</span>:<span class="w"> </span><span class="m">0</span>.9999992251396179,<span class="w"> </span><span class="s1">&#39;task_reward&#39;</span>:<span class="w"> </span>-0.6280517578125,<span class="w"> </span><span class="s1">&#39;kl_reward&#39;</span>:<span class="w"> </span>-2.988609537624143e-07,<span class="w"> </span><span class="s1">&#39;final_reward&#39;</span>:<span class="w"> </span>-0.6303607225418091,<span class="w"> </span><span class="s1">&#39;advantage&#39;</span>:<span class="w"> </span><span class="m">0</span>.004505862481892109,<span class="w"> </span><span class="s1">&#39;avg_seq_len&#39;</span>:<span class="w"> </span><span class="m">7834</span>.6328125,<span class="w"> </span><span class="s1">&#39;avg_prompt_len&#39;</span>:<span class="w"> </span><span class="m">108</span>.900390625,<span class="w"> </span><span class="s1">&#39;n_tokens&#39;</span>:<span class="w"> </span><span class="m">126578395</span>.0,<span class="w"> </span><span class="s1">&#39;n_valid_tokens&#39;</span>:<span class="w"> </span><span class="m">126578395</span>.0,<span class="w"> </span><span class="s1">&#39;n_seqs&#39;</span>:<span class="w"> </span><span class="m">16384</span>.0,<span class="w"> </span><span class="s1">&#39;no_eos_ratio&#39;</span>:<span class="w"> </span><span class="m">0</span>.11761474609375,<span class="w"> </span><span class="s1">&#39;disable_value&#39;</span>:<span class="w"> </span><span class="m">1</span>.0,<span class="w"> </span><span class="s1">&#39;mask_no_eos_with_zero&#39;</span>:<span class="w"> </span><span class="m">0</span>.0<span class="o">}</span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-13:05:58.239<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>RPC<span class="w"> </span>name<span class="w"> </span>actor_train<span class="w"> </span>returns<span class="w"> </span><span class="o">{</span><span class="s1">&#39;ppo_approx_kl&#39;</span>:<span class="w"> </span>-2.4861981728463434e-05,<span class="w"> </span><span class="s1">&#39;actor_loss&#39;</span>:<span class="w"> </span><span class="m">1</span>.3935685672095133e-07,<span class="w"> </span><span class="s1">&#39;actor_clip_ratio&#39;</span>:<span class="w"> </span><span class="m">3</span>.02603467616791e-07,<span class="w"> </span><span class="s1">&#39;importance_weight&#39;</span>:<span class="w"> </span><span class="m">0</span>.9999998807907104,<span class="w"> </span><span class="s1">&#39;task_reward&#39;</span>:<span class="w"> </span>-0.78857421875,<span class="w"> </span><span class="s1">&#39;kl_reward&#39;</span>:<span class="w"> </span>-3.672174671009998e-07,<span class="w"> </span><span class="s1">&#39;final_reward&#39;</span>:<span class="w"> </span>-0.791388750076294,<span class="w"> </span><span class="s1">&#39;advantage&#39;</span>:<span class="w"> </span><span class="m">0</span>.005053278990089893,<span class="w"> </span><span class="s1">&#39;avg_seq_len&#39;</span>:<span class="w"> </span><span class="m">7773</span>.39404296875,<span class="w"> </span><span class="s1">&#39;avg_prompt_len&#39;</span>:<span class="w"> </span><span class="m">108</span>.7890625,<span class="w"> </span><span class="s1">&#39;n_tokens&#39;</span>:<span class="w"> </span><span class="m">125576883</span>.0,<span class="w"> </span><span class="s1">&#39;n_valid_tokens&#39;</span>:<span class="w"> </span><span class="m">125576883</span>.0,<span class="w"> </span><span class="s1">&#39;n_seqs&#39;</span>:<span class="w"> </span><span class="m">16384</span>.0,<span class="w"> </span><span class="s1">&#39;no_eos_ratio&#39;</span>:<span class="w"> </span><span class="m">0</span>.117919921875,<span class="w"> </span><span class="s1">&#39;disable_value&#39;</span>:<span class="w"> </span><span class="m">1</span>.0,<span class="w"> </span><span class="s1">&#39;mask_no_eos_with_zero&#39;</span>:<span class="w"> </span><span class="m">0</span>.0<span class="o">}</span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-13:44:14.342<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>RPC<span class="w"> </span>name<span class="w"> </span>actor_train<span class="w"> </span>returns<span class="w"> </span><span class="o">{</span><span class="s1">&#39;ppo_approx_kl&#39;</span>:<span class="w"> </span>-2.516058702894952e-05,<span class="w"> </span><span class="s1">&#39;actor_loss&#39;</span>:<span class="w"> </span>-7.665488510610885e-07,<span class="w"> </span><span class="s1">&#39;actor_clip_ratio&#39;</span>:<span class="w"> </span><span class="m">1</span>.9505058901359007e-07,<span class="w"> </span><span class="s1">&#39;importance_weight&#39;</span>:<span class="w"> </span><span class="m">0</span>.9999997615814209,<span class="w"> </span><span class="s1">&#39;task_reward&#39;</span>:<span class="w"> </span>-0.6158447265625,<span class="w"> </span><span class="s1">&#39;kl_reward&#39;</span>:<span class="w"> </span>-4.6867208425283025e-07,<span class="w"> </span><span class="s1">&#39;final_reward&#39;</span>:<span class="w"> </span>-0.6195111274719238,<span class="w"> </span><span class="s1">&#39;advantage&#39;</span>:<span class="w"> </span><span class="m">0</span>.004475570283830166,<span class="w"> </span><span class="s1">&#39;avg_seq_len&#39;</span>:<span class="w"> </span><span class="m">7928</span>.50830078125,<span class="w"> </span><span class="s1">&#39;avg_prompt_len&#39;</span>:<span class="w"> </span><span class="m">105</span>.517578125,<span class="w"> </span><span class="s1">&#39;n_tokens&#39;</span>:<span class="w"> </span><span class="m">128171874</span>.0,<span class="w"> </span><span class="s1">&#39;n_valid_tokens&#39;</span>:<span class="w"> </span><span class="m">128171874</span>.0,<span class="w"> </span><span class="s1">&#39;n_seqs&#39;</span>:<span class="w"> </span><span class="m">16384</span>.0,<span class="w"> </span><span class="s1">&#39;no_eos_ratio&#39;</span>:<span class="w"> </span><span class="m">0</span>.12353515625,<span class="w"> </span><span class="s1">&#39;disable_value&#39;</span>:<span class="w"> </span><span class="m">1</span>.0,<span class="w"> </span><span class="s1">&#39;mask_no_eos_with_zero&#39;</span>:<span class="w"> </span><span class="m">0</span>.0<span class="o">}</span>
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-14:22:33.857<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>RPC<span class="w"> </span>name<span class="w"> </span>actor_train<span class="w"> </span>returns<span class="w"> </span><span class="o">{</span><span class="s1">&#39;ppo_approx_kl&#39;</span>:<span class="w"> </span>-2.4821250917739235e-05,<span class="w"> </span><span class="s1">&#39;actor_loss&#39;</span>:<span class="w"> </span>-3.922649227661168e-07,<span class="w"> </span><span class="s1">&#39;actor_clip_ratio&#39;</span>:<span class="w"> </span><span class="m">3</span>.323623900541861e-07,<span class="w"> </span><span class="s1">&#39;importance_weight&#39;</span>:<span class="w"> </span><span class="m">1</span>.0000001192092896,<span class="w"> </span><span class="s1">&#39;task_reward&#39;</span>:<span class="w"> </span>-0.7025146484375,<span class="w"> </span><span class="s1">&#39;kl_reward&#39;</span>:<span class="w"> </span>-5.863367960046162e-07,<span class="w"> </span><span class="s1">&#39;final_reward&#39;</span>:<span class="w"> </span>-0.7071446776390076,<span class="w"> </span><span class="s1">&#39;advantage&#39;</span>:<span class="w"> </span><span class="m">0</span>.004277692176401615,<span class="w"> </span><span class="s1">&#39;avg_seq_len&#39;</span>:<span class="w"> </span><span class="m">8002</span>.4873046875,<span class="w"> </span><span class="s1">&#39;avg_prompt_len&#39;</span>:<span class="w"> </span><span class="m">105</span>.951171875,<span class="w"> </span><span class="s1">&#39;n_tokens&#39;</span>:<span class="w"> </span><span class="m">129376851</span>.0,<span class="w"> </span><span class="s1">&#39;n_valid_tokens&#39;</span>:<span class="w"> </span><span class="m">129376851</span>.0,<span class="w"> </span><span class="s1">&#39;n_seqs&#39;</span>:<span class="w"> </span><span class="m">16384</span>.0,<span class="w"> </span><span class="s1">&#39;no_eos_ratio&#39;</span>:<span class="w"> </span><span class="m">0</span>.12286376953125,<span class="w"> </span><span class="s1">&#39;disable_value&#39;</span>:<span class="w"> </span><span class="m">1</span>.0,<span class="w"> </span><span class="s1">&#39;mask_no_eos_with_zero&#39;</span>:<span class="w"> </span><span class="m">0</span>.0<span class="o">}</span>
+</pre></div>
+</div>
+<p>以最后一条说明其中几个重点字段的含义：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">task_reward</span></code>：这个step中采样的所有答案的平均奖励值，训练稳步进行的话这个值会持续上升，最终维持不变</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">importance_weight</span></code>: PPO loss中重要性采样比率在所有token上的平均值，通常接近1。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">actor_clip_ratio</span></code>: PPO loss中被clip掉的token占所有token的比率，通常小于0.1。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">actor_loss</span></code>: PPO loss，<strong>不会随着训练过程有明显的上升或下降趋势</strong>，不应作为模型表现的参考。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">avg_seq_len</span></code>: 这一步中采样的所有序列（即提示词和答案相加）的平均长度。在完整的多阶段训练中，这个值会先下降再上升。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_eos_ratio</span></code>: 这一步中采样的所有答案因为超出最大生成长度被截断的比率。这个值上升也代表了答案的平均长度在上升。</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id12">
+<h2>评估<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<section id="id13">
+<h3>评估流程<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>评估代码包含在仓库的<code class="docutils literal notranslate"><span class="pre">evaluation</span></code>文件夹中。按照以上的教程，训练得到的checkpoint会保存在<code class="docutils literal notranslate"><span class="pre">/storage/ray/experiments/checkpoints/root/</span></code>路径下，例如<code class="docutils literal notranslate"><span class="pre">/storage/ray/experiments/checkpoints/root/ppo-zero-distill-7B-n16/1024x16-n16/actor/epoch1epochstep20globalstep20/</span></code>。</p>
+<p>启动一个新的容器用于运行评估脚本（评估需要更新部分 python 库，请不要在训练容器中进行）：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">name</span> <span class="n">r1</span><span class="o">-</span><span class="nb">eval</span> <span class="o">--</span><span class="n">privileged</span> <span class="o">--</span><span class="n">gpus</span> <span class="nb">all</span> <span class="o">--</span><span class="n">network</span> <span class="n">host</span> <span class="o">--</span><span class="n">shm</span><span class="o">-</span><span class="n">size</span> <span class="mi">700</span><span class="n">g</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">storage</span><span class="p">:</span><span class="o">/</span><span class="n">storage</span> <span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">inclusionai</span><span class="o">/</span><span class="n">areal</span><span class="o">-</span><span class="n">runtime</span><span class="p">:</span><span class="n">v0</span><span class="mf">.2.0</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;tail -f /dev/null&quot;</span>
+<span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">r1</span><span class="o">-</span><span class="nb">eval</span> <span class="n">bash</span>
+</pre></div>
+</div>
+<p>在docker容器内部运行以下脚本进行评估：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/storage/codes/AReaL/evaluation
+<span class="nb">cd</span><span class="w"> </span>latex2sympy
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+<span class="nb">cd</span><span class="w"> </span>..
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt<span class="w"> </span>
+pip<span class="w"> </span>install<span class="w"> </span>vllm<span class="w"> </span>--no-build-isolation
+pip<span class="w"> </span>install<span class="w"> </span><span class="nv">transformers</span><span class="o">==</span><span class="m">4</span>.47.0
+pip<span class="w"> </span>install<span class="w"> </span>prettytable<span class="w"> </span>timeout_decorator
+mkdir<span class="w"> </span>/storage/ray/eval_output/
+nohup<span class="w"> </span>python<span class="w"> </span>eval_and_aggregate.py<span class="w"> </span><span class="se">\</span>
+<span class="w">	</span>--model_path<span class="w"> </span>/storage/ray/experiments/checkpoints/root/ppo-zero-distill-7B-n16/1024x16-n16/actor/epoch1epochstep20globalstep20/<span class="w"> </span><span class="se">\</span>
+<span class="w">	</span>--output_path<span class="w"> </span>/storage/ray/eval_output/<span class="w"> </span><span class="se">\</span>
+<span class="w">	</span>--data_names<span class="w"> </span><span class="s2">&quot;math_500,aime24,amc23&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">	</span>--max_gen_tokens<span class="w"> </span><span class="m">32768</span><span class="w"> </span><span class="p">&amp;</span>&gt;<span class="w"> </span>/storage/ray/eval_output/eval_and_aggregate_parallel.log<span class="w"> </span><span class="p">&amp;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--model_path</span></code>：模型参数的保存路径</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output_path</span></code>：评估过程中生成的答案和日志文件路径</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--data_names</span></code>: 可以指定评测某个数据，多个数据集用逗号隔开，默认为 math_500, aime24, amc23</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max_gen_tokens</span></code>：最长的答案生成长度，默认值 32768</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>评估结果<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>评估脚本运行完后会在 /storage/ray/eval_output/eval_and_aggregate_parallel.log 日志文件输出一个表格，例如：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----------+---------------+---------------+---------------+------------+---------------+--------+---------+</span>
+<span class="o">|</span> <span class="n">dataset</span>  <span class="o">|</span> <span class="n">num_questions</span> <span class="o">|</span> <span class="n">greedy_length</span> <span class="o">|</span> <span class="n">sample_length</span> <span class="o">|</span> <span class="n">greedy_acc</span> <span class="o">|</span> <span class="n">sample_pass</span><span class="o">@</span><span class="mi">1</span> <span class="o">|</span> <span class="k">pass</span><span class="o">@</span><span class="mi">8</span> <span class="o">|</span> <span class="k">pass</span><span class="o">@</span><span class="mi">16</span> <span class="o">|</span>
+<span class="o">+----------+---------------+---------------+---------------+------------+---------------+--------+---------+</span>
+<span class="o">|</span> <span class="n">math_500</span> <span class="o">|</span>      <span class="mi">500</span>      <span class="o">|</span>     <span class="mf">6757.4</span>    <span class="o">|</span>     <span class="mf">4139.5</span>    <span class="o">|</span>    <span class="mf">84.4</span>    <span class="o">|</span>      <span class="mf">92.7</span>     <span class="o">|</span>  <span class="mf">97.3</span>  <span class="o">|</span>   <span class="mf">97.7</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="n">aime24</span>  <span class="o">|</span>       <span class="mi">30</span>      <span class="o">|</span>    <span class="mf">19328.0</span>    <span class="o">|</span>    <span class="mf">13663.5</span>    <span class="o">|</span>    <span class="mf">50.0</span>    <span class="o">|</span>      <span class="mf">50.4</span>     <span class="o">|</span>  <span class="mf">77.3</span>  <span class="o">|</span>   <span class="mf">80.0</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="n">amc23</span>   <span class="o">|</span>       <span class="mi">40</span>      <span class="o">|</span>     <span class="mf">8850.0</span>    <span class="o">|</span>     <span class="mf">6526.2</span>    <span class="o">|</span>    <span class="mf">80.0</span>    <span class="o">|</span>      <span class="mf">90.5</span>     <span class="o">|</span>  <span class="mf">96.8</span>  <span class="o">|</span>   <span class="mf">98.8</span>  <span class="o">|</span>
+<span class="o">+----------+---------------+---------------+---------------+------------+---------------+--------+---------+</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{greedy|sample}_length</span></code>: 在greedy或随机采样策略下生成的平均答案长度</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">greedy_acc</span></code>：在greedy采样下的平均准确率</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sample_pass&#64;{k}</span></code>：在随机采样下平均每k个答案产生正确答案的概率</p></li>
+</ul>
+</section>
+<section id="id15">
+<h3>额外说明<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<section id="id16">
+<h4>关键参数<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>我们提供的评估脚本默认采样32次取平均值，采样温度值为0.6</p></li>
+<li><p>我们发现vLLM的<code class="docutils literal notranslate"><span class="pre">enforce_eager</span></code>参数很大程度影响评估性能，当<code class="docutils literal notranslate"><span class="pre">enforce_eager=True</span></code>时我们才能够复现先前工作汇报的模型表现，否则评估结果会低于先前工作汇报的结果，因此我们会在执行 <code class="docutils literal notranslate"><span class="pre">eval_and_aggregate_parallel.py</span></code> 时将<code class="docutils literal notranslate"><span class="pre">enforce_eager</span></code>强制开启。</p></li>
+</ul>
+<p>由于以上原因，评估过程通常会消耗较长时间。</p>
+</section>
+<section id="id17">
+<h4>运行时间<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<p>评估的运行时间取决于最长生成长度、数据集的题目数量和模型大小等等。在1台8*H100机器上，7B模型，数据集为<code class="docutils literal notranslate"><span class="pre">math_500,aime24,amc23</span></code>，生成长度为32768，评估脚本运行时间为 5 个小时。</p>
+</section>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<p>如果以下内容没有解答你的问题，欢迎在 GitHub Issue 中进行提问。</p>
+<section id="id18">
+<h3>自动恢复<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p>当设置了 <code class="docutils literal notranslate"><span class="pre">recover_mode=auto</span></code> 并且训练配置和之前相同，AReaL 会尝试找到之前生成的 checkpoints 并且从这个 checkpoints 恢复训练。</p>
+<p>如果自动恢复失败，有这些可能性：</p>
+<ul class="simple">
+<li><p>训练配置里的 <code class="docutils literal notranslate"><span class="pre">experiment_name</span></code> 和 <code class="docutils literal notranslate"><span class="pre">trial_name</span></code> 与之前的不一样</p></li>
+<li><p>Batch Size（参数里的 <code class="docutils literal notranslate"><span class="pre">dataset.train_bs_n_seqs</span></code>），Group Size（参数里的 <code class="docutils literal notranslate"><span class="pre">group_size</span></code>），节点数（参数里的 <code class="docutils literal notranslate"><span class="pre">n_nodes</span></code>）三个值发生了变化</p></li>
+<li><p>之前的训练没有创建过 recover checkpoint 。默认的 recover checkpoint 规则有 2 个：</p>
+<ul>
+<li><p>从第 2 个 step 完成后才生成 recover checkpoint</p></li>
+<li><p>一个 step 训练完成，且距离上次 recover checkpoint 时间超过 600s，则生成一个新的 recover checkpoint。这个参数在 <code class="docutils literal notranslate"><span class="pre">./examples/configs/*/*.yaml</span></code> 文件里，参数名为 ：<code class="docutils literal notranslate"><span class="pre">exp_ctrl.ckpt_freq_secs=600</span></code>。</p></li>
+</ul>
+</li>
+</ul>
+<p>可以通过搜索 <code class="docutils literal notranslate"><span class="pre">Dumped</span> <span class="pre">recover</span></code> 确认是否生成过 recover checkpoint</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-11:52:02.760<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Dumped<span class="w"> </span>recover<span class="w"> </span>info<span class="w"> </span>to<span class="w"> </span>file.
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-12:27:25.105<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Dumped<span class="w"> </span>recover<span class="w"> </span>info<span class="w"> </span>to<span class="w"> </span>file.
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-13:05:58.264<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Dumped<span class="w"> </span>recover<span class="w"> </span>info<span class="w"> </span>to<span class="w"> </span>file.
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-13:44:14.411<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Dumped<span class="w"> </span>recover<span class="w"> </span>info<span class="w"> </span>to<span class="w"> </span>file.
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-14:22:33.883<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Dumped<span class="w"> </span>recover<span class="w"> </span>info<span class="w"> </span>to<span class="w"> </span>file.
+<span class="o">(</span>master_worker/0<span class="w"> </span><span class="nv">pid</span><span class="o">=</span><span class="m">96390</span>,<span class="w"> </span><span class="nv">ip</span><span class="o">=</span>xxx.xxx.xxx.xxx<span class="o">)</span><span class="w"> </span><span class="m">20250222</span>-14:59:44.925<span class="w"> </span>master<span class="w"> </span>worker<span class="w"> </span>INFO:<span class="w"> </span>Dumped<span class="w"> </span>recover<span class="w"> </span>info<span class="w"> </span>to<span class="w"> </span>file.
+</pre></div>
+</div>
+</section>
+<section id="outofmemory">
+<h3>一系列OutOfMemory错误<a class="headerlink" href="#outofmemory" title="Link to this heading">#</a></h3>
+<p>我们提供的脚本已经尽最大努力避免了OOM错误的发生，但是OOM问题仍然会随着训练进行，在内存碎片增加和生成序列长度越来越长时偶尔发生。虽然这些问题通常可以通过自动重启解决，当重启频繁时，用户还可以尝试以下针对性的解决方式。</p>
+<section id="torch-cuda-cudaoutofmemoryerror">
+<h4>torch.cuda.CudaOutOfMemoryError<a class="headerlink" href="#torch-cuda-cudaoutofmemoryerror" title="Link to this heading">#</a></h4>
+<p>解决这个问题的关键是定位错误发生的阶段。</p>
+<ul class="simple">
+<li><p>如果发生在初始化阶段（在进入到actor_gen之前）:</p>
+<ul>
+<li><p>检查当前GPU上是否存在残留进程。在分布式场景下，可以通过重启ray cluster解决；在单机场景下，可以通过pkill解决。</p></li>
+</ul>
+</li>
+<li><p>该错误通常不会发生在actor_gen阶段。</p></li>
+<li><p>如果发生在ref_inf或actor_train阶段</p>
+<ul>
+<li><p>改变相应计算任务的microbatch大小，例如<code class="docutils literal notranslate"><span class="pre">actor_train.mb_spec.max_tokens_per_mb=20480</span></code>，这个参数代表每次模型forward/backward的数据最多只会包含20480个token，这个值最小可以设为生成序列的最长长度（包括prompt）</p></li>
+<li><p>改变模型的并行策略，即<code class="docutils literal notranslate"><span class="pre">allocation_mode</span></code>，可以尝试减少数据并行的大小，增加张量或流水线并行的大小。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cuda-error-out-of-memory">
+<h4>CUDA error: out of memory<a class="headerlink" href="#cuda-error-out-of-memory" title="Link to this heading">#</a></h4>
+<p>这个问题可能会发生在vLLM初始化CPU KV cache时，表示每台机器的内存不够了。可以减小<code class="docutils literal notranslate"><span class="pre">actor.vllm.swap_space</span></code>解决。</p>
+</section>
+<section id="runtimeerror-aborted-due-to-the-lack-of-cpu-swap-space">
+<h4>RuntimeError: Aborted due to the lack of CPU swap space.<a class="headerlink" href="#runtimeerror-aborted-due-to-the-lack-of-cpu-swap-space" title="Link to this heading">#</a></h4>
+<p>问题的原因是序列长、对KV cache需求大，在GPU显存不够时KV cache会被卸载到内存，而内存中设置的swap space不够。这个问题和<a class="reference external" href="https://docs.vllm.ai/en/latest/performance/optimization.html">Preemption的报错</a>紧密相关。解决方案是增加<code class="docutils literal notranslate"><span class="pre">actor.vllm.swap_space</span></code>，如果同样的错误出现，请减少<code class="docutils literal notranslate"><span class="pre">actor.vllm.max_num_seqs</span></code>并参考<a class="reference external" href="https://docs.vllm.ai/en/latest/performance/optimization.html">vLLM官方文档</a>。</p>
+</section>
+<section id="cuda-error-an-illegal-memory-access-was-encountered">
+<h4>CUDA error: an illegal memory access was encountered<a class="headerlink" href="#cuda-error-an-illegal-memory-access-was-encountered" title="Link to this heading">#</a></h4>
+<p>通常会在vLLM生成阶段出现，同样是显存不足的一种表现。解决方案包括：</p>
+<ul class="simple">
+<li><p>减小训练batch size或者每个prompt生成的答案数量，但减小后会降低样本效率、延长训练时间</p></li>
+<li><p><a class="reference external" href="https://github.com/vllm-project/vllm/issues/5376">将vLLM的attention backend换成xformers</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tutorial"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">前置要求</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">硬件要求</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">软件要求</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">一键搭建环境并启动训练</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">环境配置</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">代码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">数据集</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ray">启动 Ray 集群</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rl">RL训练</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commandline-options">Commandline Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">过程观测</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">查看训练进度</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">查看训练的效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">评估</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">评估流程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">评估结果</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">额外说明</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">关键参数</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">运行时间</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">自动恢复</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outofmemory">一系列OutOfMemory错误</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#torch-cuda-cudaoutofmemoryerror">torch.cuda.CudaOutOfMemoryError</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cuda-error-out-of-memory">CUDA error: out of memory</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#runtimeerror-aborted-due-to-the-lack-of-cpu-swap-space">RuntimeError: Aborted due to the lack of CPU swap space.</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cuda-error-an-illegal-memory-access-was-encountered">CUDA error: an illegal memory access was encountered</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Wei Fu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
