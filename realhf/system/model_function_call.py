@@ -10,7 +10,10 @@ import uuid
 from collections import defaultdict
 from typing import Dict, Hashable, List, Set, Tuple
 
-import swanlab
+try:
+    import swanlab
+except ImportError:
+    swanlab = None
 import wandb
 from tensorboardX import SummaryWriter
 

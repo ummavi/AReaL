@@ -8,7 +8,10 @@ import subprocess
 import time
 from typing import Dict, Optional
 
-import swanlab
+try:
+    import swanlab
+except ImportError:
+    swanlab = None
 import wandb
 
 import realhf.api.core.system_api as config_pkg
@@ -131,7 +134,8 @@ class EvaluationStep:
             for k, v in d.items():
                 log_data[f"{data_name}_{k}"] = v
         wandb.log(log_data, step=self.global_step)
-        swanlab.log(log_data, step=self.global_step)
+        if swanlab is not None:
+            swanlab.log(log_data, step=self.global_step)
         self.status = EvaluationStepStatus.LOGGED
         logger.info(f"Logging eval result {log_data} to step {self.global_step}")
 
@@ -234,6 +238,8 @@ class AutomaticEvaluator:
         )
 
     def __lazy_swanlab_init(self):
+        if swanlab is None:
+            return
         if self.__swanlab_config.api_key:
             swanlab.login(self.__swanlab_config.api_key)
         if self.swanlab_config.config is None:

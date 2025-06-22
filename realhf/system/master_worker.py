@@ -12,7 +12,10 @@ from typing import Dict
 import colorama
 import networkx as nx
 import numpy as np
-import swanlab
+try:
+    import swanlab
+except ImportError:
+    swanlab = None
 import wandb
 from tensorboardX import SummaryWriter
 
@@ -315,7 +318,7 @@ class MasterWorker(worker_base.AsyncWorker):
         )
 
         # swanlab init, connect to remote or local swanlab host
-        if self.swanlab_config.mode != "disabled" and self.swanlab_config.api_key:
+        if swanlab is not None and self.swanlab_config.mode != "disabled" and self.swanlab_config.api_key:
             swanlab.login(self.swanlab_config.api_key)
         if self.swanlab_config.config is None:
             import yaml
@@ -333,20 +336,21 @@ class MasterWorker(worker_base.AsyncWorker):
         else:
             __config = self.swanlab_config.config
         __config["FRAMEWORK"] = "AReaL"
-        swanlab.init(
-            project=self.swanlab_config.project or constants.experiment_name(),
-            experiment_name=self.swanlab_config.name
-            or f"{constants.trial_name()}_train",
-            config=__config,
-            logdir=self.swanlab_config.logdir
-            or os.path.join(
-                constants.LOG_ROOT,
-                constants.experiment_name(),
-                constants.trial_name(),
-                "swanlab",
-            ),
-            mode=self.swanlab_config.mode,
-        )
+        if swanlab is not None:
+            swanlab.init(
+                project=self.swanlab_config.project or constants.experiment_name(),
+                experiment_name=self.swanlab_config.name
+                or f"{constants.trial_name()}_train",
+                config=__config,
+                logdir=self.swanlab_config.logdir
+                or os.path.join(
+                    constants.LOG_ROOT,
+                    constants.experiment_name(),
+                    constants.trial_name(),
+                    "swanlab",
+                ),
+                mode=self.swanlab_config.mode,
+            )
         # tensorboard logging
         self.__summary_writer = None
         if self.tensorboard_config.path is not None:
@@ -575,7 +579,8 @@ class MasterWorker(worker_base.AsyncWorker):
         )
 
         wandb.finish()
-        swanlab.finish()
+        if swanlab is not None:
+            swanlab.finish()
         if self.__summary_writer is not None:
             self.__summary_writer.close()
         gc.collect()
