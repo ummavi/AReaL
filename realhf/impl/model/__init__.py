@@ -32,8 +32,20 @@ if is_available("vllm") and is_version_less("vllm", "0.6.4"):
 
 import realhf.impl.model.backend.inference
 import realhf.impl.model.backend.megatron
-import realhf.impl.model.backend.mock_train
 import realhf.impl.model.backend.sglang
+
+# CONDITIONAL: Only import mock_train in test environments
+# Check for explicit test environment indicators
+_is_test_env = (
+    os.environ.get("AREAL_TEST_MODE") == "true" or
+    os.environ.get("PYTEST_CURRENT_TEST") is not None or
+    "test" in os.getcwd().lower()
+)
+
+if _is_test_env:
+    import realhf.impl.model.backend.mock_train
+else:
+    logger.info("Production mode: mock_train backend disabled")
 
 # Set PyTorch JIT options, following Megatron-LM.
 if torch.cuda.is_available():
