@@ -32,7 +32,6 @@ from realhf.api.core.model_api import (
     register_backend,
 )
 from realhf.base import (
-    cluster,
     constants,
     datapack,
     gpu_utils,
@@ -431,9 +430,9 @@ class SGLangGenerationBackend(ModelBackend, SGLangConfig):
     def _initialize(self, model: Model, spec: FinetuneSpec) -> Model:
         if constants.pipe_parallel_world_size() != 1:
             raise RuntimeError("SGLang does not support pipe parallel size > 1.")
-        if constants.tensor_parallel_world_size() > cluster.spec.n_gpus_per_node:
+        if constants.tensor_parallel_world_size() > torch.cuda.device_count():
             raise RuntimeError(
-                "AReaL's SGLang integration does not support model parallel size > n_gpus_per_node."
+                "AReaL's SGLang integration does not support model parallel size > torch.cuda.device_count()."
             )
 
         additional_args = dataclasses.asdict(self)
@@ -475,10 +474,6 @@ class SGLangGenerationBackend(ModelBackend, SGLangConfig):
             tp_size=constants.tensor_parallel_world_size(),
             # Because we have set CUDA_VISIBLE_DEVICES to a single GPU in each process
             base_gpu_id=int(os.environ["CUDA_VISIBLE_DEVICES"]),
-            file_storage_path=os.path.join(
-                constants.SGLANG_CACHE_PATH,
-                f"sglang_storage{constants.data_parallel_rank()}",
-            ),
             # Data parallelism
             dp_size=1,  # TODO: check whether we require SGLang dp
             load_balance_method="round_robin",

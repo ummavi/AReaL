@@ -12,10 +12,6 @@ from typing import Dict
 import colorama
 import networkx as nx
 import numpy as np
-try:
-    import swanlab
-except ImportError:
-    swanlab = None
 import wandb
 from tensorboardX import SummaryWriter
 
@@ -40,6 +36,11 @@ from realhf.base import (
 from realhf.system.buffer import AsyncIOSequenceBuffer
 from realhf.system.function_executor import FunctionExecutor
 from realhf.system.model_function_call import RPCCorountineControl
+
+try:
+    import swanlab
+except (ModuleNotFoundError, ImportError):
+    swanlab = None
 
 logger = logging.getLogger("master worker", "system")
 blogger = logging.getLogger("benchmark")
@@ -100,15 +101,8 @@ class MasterWorker(worker_base.AsyncWorker):
             freq_sec=config.exp_ctrl.eval_freq_secs,
         )
 
-        self.MODEL_SAVE_ROOT = os.path.join(
-            constants.MODEL_SAVE_ROOT,
-            config.worker_info.experiment_name,
-            config.worker_info.trial_name,
-        )
-        os.makedirs(self.MODEL_SAVE_ROOT, exist_ok=True)
-
         self.__initialized = False
-        self.__recover_run, self.__recover_info = recover.load_recover_info()
+        self.__recover_run, self.__recover_info = recover.load_recover_info(self.args)
         if self.__recover_info is not None:
             logger.info(
                 f"Loaded recover info: recover_start={self.__recover_info.recover_start}, "
@@ -308,9 +302,7 @@ class MasterWorker(worker_base.AsyncWorker):
             notes=self.wandb_config.notes,
             tags=self.wandb_config.tags,
             config=self.wandb_config.config,
-            dir=os.path.join(
-                constants.LOG_ROOT, constants.experiment_name(), constants.trial_name()
-            ),
+            dir=constants.get_log_path(self.args),
             force=True,
             id=f"{constants.experiment_name()}_{constants.trial_name()}_train",
             resume="allow",
@@ -318,16 +310,19 @@ class MasterWorker(worker_base.AsyncWorker):
         )
 
         # swanlab init, connect to remote or local swanlab host
-        if swanlab is not None and self.swanlab_config.mode != "disabled" and self.swanlab_config.api_key:
-            swanlab.login(self.swanlab_config.api_key)
+        if self.swanlab_config.mode != "disabled" and self.swanlab_config.api_key:
+            if swanlab is not None:
+                swanlab.login(self.swanlab_config.api_key)
+            else:
+                logger.warning(
+                    "swanlab not installed but enabled. Ignore swanlab logging."
+                )
         if self.swanlab_config.config is None:
             import yaml
 
             with open(
                 os.path.join(
-                    constants.LOG_ROOT,
-                    constants.experiment_name(),
-                    constants.trial_name(),
+                    constants.get_log_path(self.args),
                     "config.yaml",
                 ),
                 "r",
@@ -344,9 +339,7 @@ class MasterWorker(worker_base.AsyncWorker):
                 config=__config,
                 logdir=self.swanlab_config.logdir
                 or os.path.join(
-                    constants.LOG_ROOT,
-                    constants.experiment_name(),
-                    constants.trial_name(),
+                    constants.get_log_path(self.args),
                     "swanlab",
                 ),
                 mode=self.swanlab_config.mode,
@@ -359,6 +352,7 @@ class MasterWorker(worker_base.AsyncWorker):
         # Create coroutines for model RPCs.
         logger.debug(f"Creating asyncio coroutines...")
         self.func_executor = FunctionExecutor(
+            args=self.args,
             rpcs=self.__model_rpcs,
             msid2mwid=self.config.msid2mwid,
             stream=self.__stream,
@@ -604,7 +598,7 @@ class MasterWorker(worker_base.AsyncWorker):
             hash_vals_to_ignore=self.__rpc_ctrl.used_hash_vals_this_epoch,
         )
 
-        recover.dump_recover_info(recover_info)
+        recover.dump_recover_info(self.args, recover_info)
         logger.info("Dumped recover info to file.")
         logger.info(f"Will recover from: {recover_info.recover_start}")
         logger.info(
