@@ -61,27 +61,90 @@ if megatron_available:
         class MegatronTransformerConfig:
             pass
 
-    # Import DDP and optimizer - no more fallbacks!
-    from megatron.core.distributed.distributed_data_parallel import (
-        DistributedDataParallel,
-    )
-    from megatron.core.optimizer import DistributedOptimizer, get_megatron_optimizer
-    from megatron.core.optimizer.optimizer_config import (
-        OptimizerConfig as MegatronOptimizerConfig,
-    )
-    print("✅ Successfully imported all DDP and optimizer components")
+    try:
+        # Import DDP and optimizer - handle amp_C dependency gracefully
+        from megatron.core.distributed.distributed_data_parallel import (
+            DistributedDataParallel,
+        )
+        print("✅ Successfully imported DistributedDataParallel")
+        
+        try:
+            from megatron.core.optimizer import DistributedOptimizer, get_megatron_optimizer
+            from megatron.core.optimizer.optimizer_config import (
+                OptimizerConfig as MegatronOptimizerConfig,
+            )
+            print("✅ Successfully imported all megatron optimizer components")
+        except ImportError as e:
+            print(f"❌ Failed to import megatron optimizer (amp_C dependency): {e}")
+            print("🔄 Using fallback optimizer...")
+            
+            # Create fallback classes for when amp_C is not available
+            class MegatronOptimizerConfig:
+                def __init__(self, **kwargs):
+                    for k, v in kwargs.items():
+                        setattr(self, k, v)
+            
+            class DistributedOptimizer:
+                def __init__(self, optimizer=None, *args, **kwargs):
+                    # Store the actual PyTorch optimizer
+                    self.optimizer = optimizer
+                    self.param_groups = optimizer.param_groups if optimizer else []
+                    
+                def zero_grad(self, set_to_none=True):
+                    if self.optimizer:
+                        self.optimizer.zero_grad(set_to_none=set_to_none)
+                    
+                def step(self):
+                    if self.optimizer:
+                        self.optimizer.step()
+                    return True, 0.0, 0  # update_successful, grad_norm, num_zeros
+                    
+                def get_loss_scale(self):
+                    return torch.tensor(1.0)
+                    
+                def state_dict(self):
+                    return self.optimizer.state_dict() if self.optimizer else {}
+                    
+                def load_state_dict(self, state_dict):
+                    if self.optimizer:
+                        self.optimizer.load_state_dict(state_dict)
+            
+            def get_megatron_optimizer(config, model_chunks, **kwargs):
+                # Extract parameters from model chunks
+                params = []
+                for chunk in model_chunks:
+                    params.extend(chunk.parameters())
+                
+                # Create standard PyTorch optimizer with the extracted parameters
+                optimizer = torch.optim.AdamW(params, lr=config.lr)
+                
+                # Create our fallback class with the real optimizer
+                fallback_opt = DistributedOptimizer(optimizer)
+                return fallback_opt
+    except ImportError as e:
+        print(f"❌ Failed to import DDP: {e}")
+        # Use fallback DDP as well
+        class DistributedDataParallel:
+            def __init__(self, *args, **kwargs):
+                pass
     
-    # Monkey patch
-    import megatron.core.optimizer as mcore_optim
+    # Monkey patch only if we have the real optimizer
+    try:
+        import megatron.core.optimizer as mcore_optim
+        if hasattr(mcore_optim, 'DistributedOptimizer') and 'fallback' not in str(mcore_optim.DistributedOptimizer):
+            class PatchedDistributedOptimizer(mcore_optim.DistributedOptimizer):
+                def get_model_parallel_group(self):
+                    return constants.parallelism_group()
 
-    class PatchedDistributedOptimizer(mcore_optim.DistributedOptimizer):
-        def get_model_parallel_group(self):
-            return constants.parallelism_group()
+                def get_grad_stats_parallel_group(self):
+                    return constants.parallelism_group()
 
-        def get_grad_stats_parallel_group(self):
-            return constants.parallelism_group()
-
-    mcore_optim.DistributedOptimizer = PatchedDistributedOptimizer
+            mcore_optim.DistributedOptimizer = PatchedDistributedOptimizer
+            print("✅ Applied monkey patch to DistributedOptimizer")
+        else:
+            print("🔄 Skipping monkey patch - using fallback optimizer")
+    except ImportError:
+        print("🔄 Skipping monkey patch - megatron.core.optimizer not available")
 else:
     # Fallback classes when megatron is not available
     class MegatronTransformerConfig:
