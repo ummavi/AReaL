@@ -14,7 +14,7 @@ import yaml
 from omegaconf import MISSING, OmegaConf
 
 from realhf.api.quickstart.entrypoint import kind_reminder
-from realhf.base.constants import init_constants
+# from realhf.base.constants import init_constants  # Not needed
 
 # We'll create a sync version of our config
 from realhf.experiments.common.ppo_math_exp import PPOMATHConfig
@@ -86,9 +86,10 @@ def main_sync_tool_use_training(args):
     if args.mode != "ray":
         raise RuntimeError("This script only supports the `ray` mode.")
 
-    init_constants(args)
+    # init_constants(args)  # Not needed
 
-    from realhf.base.constants import LOG_ROOT
+    # from realhf.base.constants import LOG_ROOT
+    LOG_ROOT = "/tmp/areal_logs"  # Default log root
 
     # Save overwritten configuration to yaml
     config_save_path = os.path.join(

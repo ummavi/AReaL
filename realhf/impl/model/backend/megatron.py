@@ -30,20 +30,38 @@ from realhf.impl.model.nn.real_llm_base import ReaLModelBlock
 from realhf.impl.model.parallelism.pipeline_parallel.tensor_storage import TensorBuffer
 
 megatron_available = pkg_version.is_available("megatron.core")
-try:
-    # Monkey patch
-    import megatron.core.optimizer as mcore_optim
 
-    class DistributedOptimizer(mcore_optim.DistributedOptimizer):
-        def get_model_parallel_group(self):
-            return constants.parallelism_group()
+# Import megatron components - split into sections to handle partial failures
+parallel_state = None
+MegatronTransformerConfig = None
+DistributedDataParallel = None
+DistributedOptimizer = None
+get_megatron_optimizer = None
+MegatronOptimizerConfig = None
 
-        def get_grad_stats_parallel_group(self):
-            return constants.parallelism_group()
+if megatron_available:
+    try:
+        # Try importing parallel_state first
+        from megatron.core import parallel_state
+        print("✅ Successfully imported parallel_state")
+    except (ModuleNotFoundError, ImportError) as e:
+        print(f"❌ Failed to import parallel_state: {e}")
+        class DummyParallelState:
+            pass
+        parallel_state = DummyParallelState()
 
-    mcore_optim.DistributedOptimizer = DistributedOptimizer
+    try:
+        # Try importing transformer config
+        from megatron.core.transformer.transformer_config import (
+            TransformerConfig as MegatronTransformerConfig,
+        )
+        print("✅ Successfully imported MegatronTransformerConfig")
+    except (ModuleNotFoundError, ImportError) as e:
+        print(f"❌ Failed to import MegatronTransformerConfig: {e}")
+        class MegatronTransformerConfig:
+            pass
 
-    from megatron.core import parallel_state
+    # Import DDP and optimizer - no more fallbacks!
     from megatron.core.distributed.distributed_data_parallel import (
         DistributedDataParallel,
     )
@@ -51,21 +69,30 @@ try:
     from megatron.core.optimizer.optimizer_config import (
         OptimizerConfig as MegatronOptimizerConfig,
     )
-    from megatron.core.transformer.transformer_config import (
-        TransformerConfig as MegatronTransformerConfig,
-    )
+    print("✅ Successfully imported all DDP and optimizer components")
+    
+    # Monkey patch
+    import megatron.core.optimizer as mcore_optim
 
-except (ModuleNotFoundError, ImportError):
-    # importing megatron.core in CPU container will fail due to the requirement of apex
-    # Here class types must be defined for type hinting
+    class PatchedDistributedOptimizer(mcore_optim.DistributedOptimizer):
+        def get_model_parallel_group(self):
+            return constants.parallelism_group()
+
+        def get_grad_stats_parallel_group(self):
+            return constants.parallelism_group()
+
+    mcore_optim.DistributedOptimizer = PatchedDistributedOptimizer
+else:
+    # Fallback classes when megatron is not available
     class MegatronTransformerConfig:
         pass
-
     class DistributedDataParallel:
         pass
-
     class DistributedOptimizer:
         pass
+    class DummyParallelState:
+        pass
+    parallel_state = DummyParallelState()
 
 
 if megatron_available:
@@ -205,7 +232,7 @@ def get_megatron_transformer_config(
         hidden_dropout=0.0,
         attention_dropout=mconfig.attn_pdrop,
         layernorm_epsilon=mconfig.layer_norm_epsilon,
-        add_qkv_bias=mconfig.use_attention_bias,
+        add_bias_linear=mconfig.use_attention_bias,
         activation_func=get_activation_fn(mconfig.activation_function),
         rotary_interleaved=mconfig.rotary_interleaved,
         normalization=("RMSNorm" if mconfig.layer_norm_type == "rms" else "LayerNorm"),
