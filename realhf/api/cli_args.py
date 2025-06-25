@@ -865,7 +865,9 @@ class TensorBoardConfig:
 
 def get_user_tmp():
     user = getpass.getuser()
-    user_tmp = os.path.join("/home", user, ".cache", "realhf")
+    # Use cross-platform home directory
+    home_dir = os.path.expanduser("~")
+    user_tmp = os.path.join(home_dir, ".cache", "realhf")
     os.makedirs(user_tmp, exist_ok=True)
     return user_tmp
 
